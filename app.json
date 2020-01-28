@@ -1,0 +1,28 @@
+{
+  "expo": {
+    "name": "ImageRecognition",
+    "slug": "ImageRecognition",
+    "privacy": "public",
+    "sdkVersion": "36.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.2.0",
+    "orientation": "portrait",
+    "icon": "app/assets/icons/mainAppIcon.png",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.prj666.imagerecognition"
+    }
+  }
+}
