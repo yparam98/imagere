@@ -6,7 +6,7 @@ import _ from 'lodash';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
-
+//
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
