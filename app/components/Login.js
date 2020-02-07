@@ -5,15 +5,20 @@ import * as Font from 'expo-font';
 import { StackRouter } from 'react-navigation';
 import SignUp from './SignUp';
 import _ from 'lodash';
+import axios from 'axios';
+import loginPageStyles from '../assets/css/loginPage_styles';
+import sharedStyles from '../assets/css/shared_styles';
 
 class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            dataURL: "http://myvmlab.senecacollege.ca:6746",
+            username: "",
+            password: "",
+            currentUser: ""
+        };
     }
-
-    // loginState: 0 => all good
-    // loginState: 1 => account does not exist
-    // loginState: 2 => password incorrect
 
     state = {
         // fontLoaded: false,
@@ -27,7 +32,9 @@ class Login extends Component {
         });
 
         this.setState({
-            fontLoaded: true
+            fontLoaded: true,
+            usernameInvalid: false,
+            passwordInvalid: false
         });
     }
 
@@ -35,41 +42,84 @@ class Login extends Component {
         ToastAndroid.show('forgot my password!', ToastAndroid.SHORT);
     }
 
-    navigateToNewsfeed(myNavigate) {
-        if (!this.state.usernameInvalid && !this.state.passwordInvalid) {
-            myNavigate('Newsfeed');
-        }
+    loginAuthenticated(myNavigate) {
+        myNavigate('UserExperience', { currentUser: this.state.currentUser });
+    }
+
+    onLogin(myNavigate) {
+        // loginState: 0 => all good
+        // loginState: 1 => account does not exist
+        // loginState: 2 => password incorrect
+        // loginState: 3 => missing credentials
+
+        // this.loginAuthenticated(myNavigate);
+
+        // BYPASSING LOGIN AUTHENTICATION... UNCOMMENT BEFORE PRODUCTION!!!
+        axios.post(this.state.dataURL + "/login", {
+            "logEmail": this.state.username,
+            "logPassword": this.state.password
+        }).then((response) => {
+            if (response.data.loginState != 0) {
+                throw (response.data.loginState);
+            }
+            else {
+                this.setState({
+                    currentUser: response.data.curUser
+                });
+                this.loginAuthenticated(myNavigate);
+            }
+        }).catch((err) => {
+            if (err == 1) {
+                this.setState({
+                    usernameInvalid: true,
+                    passwordInvalid: true
+                });
+                ToastAndroid.show("account does not exist!", ToastAndroid.SHORT);
+            } else if (err == 2) {
+                this.setState({
+                    usernameInvalid: false,
+                    passwordInvalid: true
+                });
+                ToastAndroid.show("password incorrect!", ToastAndroid.SHORT);
+            } else if (err == 3) {
+                this.setState({
+                    usernameInvalid: true,
+                    passwordInvalid: true
+                });
+                ToastAndroid.show("missing credentials!", ToastAndroid.SHORT);
+            }
+        });
     }
 
     render() {
         const { navigate } = this.props.navigation;
 
         return (
-            <ImageBackground source={require('../assets/images/background.png')} style={styles.backgroundImage} blurRadius={5}>
+            <ImageBackground source={require('../assets/images/background.png')} style={sharedStyles.backgroundImage} blurRadius={5}>
                 <StatusBar hidden={true} />
-                <View style={styles.darker} >
+                <View style={sharedStyles.darker} >
                     {
                         this.state.fontLoaded ? (
-                            <View style={styles.loginPageContent}>
-                                <Image source={require('../assets/images/logo.png')} style={styles.logo} />
+                            <View style={sharedStyles.pageContent}>
+                                <Image source={require('../assets/images/logo.png')} style={sharedStyles.logo} />
 
-                                <TextInput style={
-                                    _.merge({}, styles.inputField, this.state.usernameInvalid && styles.inputFieldError)
-                                } placeholder={'username'} textContentType={'username'} />
+                                <TextInput id={"usernameEntry"} style={
+                                    _.merge({}, loginPageStyles.inputField, this.state.usernameInvalid && loginPageStyles.inputFieldError)
+                                } placeholder={'email'} textContentType={'username'} onChangeText={(text) => this.setState({ username: text })} maxLength={35} />
 
-                                <TextInput style={
-                                    _.merge({}, styles.inputField, this.state.passwordInvalid && styles.inputFieldError)
-                                } placeholder={'password'} textContentType={'password'} secureTextEntry={true} />
+                                <TextInput id={"passwordEntry"} style={
+                                    _.merge({}, loginPageStyles.inputField, this.state.passwordInvalid && loginPageStyles.inputFieldError)
+                                } placeholder={'password'} textContentType={'password'} secureTextEntry={true} onChangeText={(text) => this.setState({ password: text })} maxLength={25} />
 
                                 <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={styles.buttonPress} onPress={() => this.navigateToNewsfeed(navigate)}>
-                                        <View style={styles.successButton}>
-                                            <Text style={styles.buttonText}>login</Text>
+                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.onLogin(navigate)}>
+                                        <View style={loginPageStyles.successButton}>
+                                            <Text style={loginPageStyles.buttonText}>login</Text>
                                         </View>
                                     </TouchableHighlight>
-                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={styles.buttonPress} onPress={() => this.forgot_password_press()}>
-                                        <View style={styles.helpButton}>
-                                            <Text style={styles.buttonText}>forgot password?</Text>
+                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.forgot_password_press()}>
+                                        <View style={loginPageStyles.helpButton}>
+                                            <Text style={loginPageStyles.buttonText}>forgot password?</Text>
                                         </View>
                                     </TouchableHighlight>
                                 </View>
@@ -81,103 +131,5 @@ class Login extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    loginPageContent: {
-        marginTop: 10,
-        marginBottom: 10,
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: 'flex-start'
-    },
-    backgroundImage: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-        resizeMode: "cover",
-        position: "absolute"
-    },
-    logo: {
-        top: 10,
-        marginBottom: 50,
-        alignSelf: 'center',
-        width: 595 / 6,
-        height: 842 / 6,
-        justifyContent: 'flex-start'
-    },
-    darker: {
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        flex: 1
-    },
-    inputField: {
-        backgroundColor: 'rgba(255,255,255,0.3)',
-        borderColor: 'rgba(255,255,255,0.3)',
-        paddingTop: 2,
-        paddingBottom: 10,
-        alignSelf: 'stretch',
-        marginStart: 20,
-        marginEnd: 20,
-        marginBottom: 20,
-        shadowRadius: 5,
-        shadowColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 50,
-        borderWidth: 5,
-        fontFamily: 'Quicksand',
-        fontSize: 30,
-        textAlign: "center",
-        textAlignVertical: "center",
-        color: 'white'
-    },
-    inputFieldError: {
-        backgroundColor: 'rgba(255,0,0,0.3)',
-        borderColor: 'rgba(255,0,0,0.3)'
-    },
-    textInputPrompt: {
-        fontFamily: 'Quicksand',
-        fontSize: 30,
-        textAlign: "center",
-        textAlignVertical: "center",
-        color: 'white'
-    },
-    successButton: {
-        backgroundColor: 'rgba(0,255,0,0.4)',
-        paddingTop: 2,
-        paddingBottom: 5,
-        paddingStart: 20,
-        paddingEnd: 20,
-        marginEnd: 20,
-        marginBottom: 10,
-        shadowRadius: 5,
-        shadowColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 50,
-        borderColor: 'rgba(0,255,0,0.4)',
-        borderWidth: 5
-    },
-    helpButton: {
-        backgroundColor: 'rgba(255,0,0,0.4)',
-        paddingTop: 2,
-        paddingBottom: 5,
-        paddingStart: 20,
-        paddingEnd: 20,
-        marginEnd: 20,
-        alignSelf: 'flex-end',
-        marginBottom: 10,
-        shadowRadius: 5,
-        shadowColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 50,
-        borderColor: 'rgba(255,0,0,0.4)',
-        borderWidth: 5
-    },
-    buttonPress: {
-
-    },
-    buttonText: {
-        fontFamily: 'Quicksand',
-        fontSize: 14,
-        textAlign: "center",
-        textAlignVertical: "center",
-        color: 'white'
-    }
-});
 
 export default Login;

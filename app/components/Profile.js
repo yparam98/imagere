@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl } from 'react-native';
-import { TextInput, ScrollView, FlatList } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
-import { StackRouter } from 'react-navigation';
-import SignUp from './SignUp';
-import axios from 'axios';
-import moment from 'moment';
 import _ from 'lodash';
+import profilePageStyles from '../assets/css/profilePage_styles';
+import axios from 'axios';
+import Buffer from 'buffer';
 
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            myUser: this.props.user
+            dataURL: "http://myvmlab.senecacollege.ca:6746",
+            myUser: this.props.user,
+            myProfilePicture: "",
+            profilePictureLoaded: false
         };
     }
 
-    componentDidMount() {
-        axios.get('https://lonetech.ca/api/prj666')
-            .then((response) => {
-                this.setState({ myData: response.data });
-            })
-            .catch(() => {
-                console.log("error retrieving data from API!")
-            });
+    async componentDidMount() {
+        let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+
+        this.setState({
+            profilePictureLoaded: true,
+            myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
+        });
     }
 
-    renderProfilePic() {
-
+    renderProfilePicture() {
+        return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
     }
 
     renderNewPics() {
@@ -57,7 +58,7 @@ class ProfilePage extends Component {
     renderDescription() {
         return (
             <View style={{ borderColor: "black", borderWidth: 2, margin: 5, borderRadius: 90, width: "90%", alignSelf: "center" }}>
-                <Text style={_.merge({}, styles.helperTextView, { alignSelf: "center", fontSize: 18 })}>{this.state.myUser.description}</Text>
+                <Text style={_.merge({}, profilePageStyles.helperTextView, { alignSelf: "center", fontSize: 18 })}>{this.state.myUser.description}</Text>
             </View>
         )
     }
@@ -71,24 +72,30 @@ class ProfilePage extends Component {
 
     renderProfilePage() {
         return (
-            <View style={{ marginBottom: 180, marginStart: 5, marginTop: 5, marginEnd: 5 }}>
-                {this.renderPencilIcon()}
-                <Image source={{ uri: this.state.myUser.userPicURL }} style={styles.userImage} />
-                <Text style={styles.userName}>{this.state.myUser.userName}</Text>
-                <Text style={styles.helperTextView}>description</Text>
-                {this.renderDescription()}
-                <Text style={styles.helperTextView}>new</Text>
-                <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                    {this.renderNewPics()}
-                </ScrollView>
-                <Text style={styles.helperTextView}>private</Text>
-                <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                    {this.renderPrivatePics()}
-                </ScrollView>
-                <Text style={styles.helperTextView}>public</Text>
-                <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                    {this.renderPublicPics()}
-                </ScrollView>
+            <View>
+                {
+                    this.state.profilePictureLoaded ? (
+                        <View style={{ marginBottom: 180, marginStart: 5, marginTop: 5, marginEnd: 5 }}>
+                            {this.renderProfilePicture()}
+                            <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
+                            <Text style={profilePageStyles.helperTextView}>description</Text>
+                            {this.renderDescription()}
+
+                            {/* <Text style={profilePageStyles.helperTextView}>new</Text>
+                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
+                            {this.renderNewPics()}
+                        </ScrollView>
+                        <Text style={profilePageStyles.helperTextView}>private</Text>
+                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
+                            {this.renderPrivatePics()}
+                        </ScrollView>
+                        <Text style={profilePageStyles.helperTextView}>public</Text>
+                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
+                            {this.renderPublicPics()}
+                        </ScrollView> */}
+                        </View>
+                    ) : null
+                }
             </View>
         )
     }
@@ -111,6 +118,8 @@ class Profile extends Component {
     };
 
     async componentDidMount() {
+        // console.log(this.props.userData);
+
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
@@ -119,7 +128,8 @@ class Profile extends Component {
 
         this.setState({
             fontLoaded: true,
-            userdata: this.props.navigation.state.params.user
+            // userdata: this.props.navigation.state.params.user,
+            userdata: this.props.userData
         });
     }
 
@@ -128,18 +138,11 @@ class Profile extends Component {
             <View>
                 {
                     this.state.fontLoaded ? (
-                        <View style={styles.profileView}>
-                            <View style={styles.topBlackBackground}>
-                                <Image source={require("../assets/icons/ic_launcher4x.png")} style={styles.topBarLogo} />
-                                <Text style={styles.regularText}>profile</Text>
-                            </View>
-                            <ScrollView style={styles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
+                        <View style={profilePageStyles.profileView}>
+                            <ScrollView style={profilePageStyles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
                                 <ProfilePage user={this.state.userdata} />
-                                {/* <Text>{this.state.userdata.userName}</Text> */}
+                                {/* <Text>{this.state.userdata.firstName}</Text> */}
                             </ScrollView>
-                            {/* <View style={styles.bottomNavBar}>
-                                <Text>Footer</Text>
-                            </View> */}
                         </View>
                     ) : null
                 }
@@ -147,69 +150,5 @@ class Profile extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    profileView: {
-        // flex: 1
-    },
-    topBlackBackground: {
-        backgroundColor: 'black',
-        flexDirection: 'row',
-        padding: 10,
-        justifyContent: "space-between",
-        elevation: 5,
-        // height: 500
-    },
-    topBarLogo: {
-        width: 144 / 3,
-        height: 144 / 3,
-        alignSelf: 'flex-start'
-    },
-    regularText: {
-        fontFamily: 'Quicksand',
-        fontSize: 30,
-        color: 'white',
-        alignSelf: 'center'
-    },
-    bottomNavBar: {
-        backgroundColor: 'purple',
-        flexDirection: 'row',
-        padding: 0,
-        justifyContent: "space-between",
-        width: '100%',
-        height: 50,
-        position: 'absolute',
-        bottom: 0
-    },
-    scrollingProfilePage: {
-        alignContent: "center",
-        // backgroundColor: "#003a5c"
-    },
-    userName: {
-        fontFamily: "Quicksand",
-        fontSize: 48,
-        color: "black",
-        padding: 5,
-        marginBottom: "0.5%",
-        alignSelf: "center"
-    },
-    userImage: {
-        width: 651 / 4,
-        height: 651 / 4,
-        borderRadius: 90,
-        borderColor: "black",
-        borderWidth: 5,
-        margin: 10,
-        alignSelf: "center"
-    },
-    helperTextView: {
-        fontFamily: "Quicksand",
-        fontSize: 12,
-        color: "black",
-        padding: 5,
-        margin: 10,
-        alignSelf: "flex-start"
-    }
-});
 
 export default Profile;

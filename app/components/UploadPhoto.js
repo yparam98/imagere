@@ -1,0 +1,103 @@
+import React, { Component } from 'react';
+import { Text, View, Image, TouchableOpacity, PermissionsAndroid } from 'react-native';
+import * as Font from 'expo-font';
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import uploadPhotoStyles from '../assets/css/uploadPhoto_styles';
+import * as ImagePicker from 'expo-image-picker';
+import _ from 'lodash';
+import * as LocationModule from 'expo-location';
+import * as PermissionsModule from 'expo-permissions';
+import Axios from 'axios';
+
+
+class UploadPhoto extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            specPhoto: "",
+            device_location: ""
+        }
+    }
+
+    state = {
+        fontLoaded: false,
+    };
+
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
+            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
+        });
+
+        this.setState({
+            fontLoaded: true,
+            currentView: "newsfeed"
+        });
+    }
+
+    sendPhoto() {
+
+    }
+
+    uploadPhoto = async () => {
+        let options = { base64: true };
+        let taken_photo = await ImagePicker.launchImageLibraryAsync();
+
+        this.setState({
+            specPhoto: taken_photo
+        });
+    }
+
+    openCamera = async () => {
+        let options = { base64: true, skipProcessing: true };
+        let taken_photo = await ImagePicker.launchCameraAsync();
+
+        this.setState({
+            specPhoto: taken_photo
+        });
+    }
+
+    getLocation = async () => {
+        let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION);
+        let location = await LocationModule.getCurrentPositionAsync({});
+        this.setState({
+            device_location: location
+        });
+
+        // Google Geocoding API to get location from Device GPS module
+        //
+        // Axios.get(
+        //     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+        //     location.coords.latitude + "," + location.coords.longitude +
+        //     "&key=INSERT_API_KEY_HERE"
+        // ).then((response) => {
+        //     console.log(response.data);
+        // });
+    }
+
+    render() {
+        return (
+            <View style={{ flex: 1 }}>
+                {
+                    this.state.fontLoaded ? (
+                        <View style={uploadPhotoStyles.uploadPictureView}>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPress={() => this.uploadPhoto()}>
+                                <View>
+                                    <Image source={require('../assets/icons/upload_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "purple" })} onPress={() => this.getLocation()}>
+                                <View>
+                                    <Image source={require('../assets/icons/camera_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    ) : null
+                }
+            </View>
+        );
+    }
+}
+
+export default UploadPhoto;

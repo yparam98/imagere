@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ImageRecognition",
-    "slug": "ImageRecognition",
+    "name": "imagère",
+    "slug": "imagere",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -9,9 +9,8 @@
       "android",
       "web"
     ],
-    "version": "1.2.0",
+    "version": "1.5.0",
     "orientation": "portrait",
-    "icon": "app/assets/icons/mainAppIcon.png",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -19,10 +18,13 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": false
+      "supportsTablet": false,
+      "icon": "app/assets/icons/ios_icon_1024.png",
+      "bundleIdentifier": "com.prj666.imagere"
     },
     "android": {
-      "package": "com.prj666.imagerecognition"
+      "package": "com.prj666.imagere",
+      "icon": "app/assets/icons/android_icon_1024.png"
     }
   }
 }
