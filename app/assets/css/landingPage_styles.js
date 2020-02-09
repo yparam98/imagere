@@ -2,8 +2,6 @@ import { StyleSheet } from "react-native";
 
 const landingPageStyles = StyleSheet.create({
     landingPageContent: {
-        marginTop: 10,
-        marginBottom: 10,
         alignItems: 'center',
         flex: 1,
         flexDirection: "column",
@@ -13,51 +11,45 @@ const landingPageStyles = StyleSheet.create({
         flex: 1,
         height: '100%',
         width: '100%',
-        resizeMode: "cover",
-        position: "absolute"
+        resizeMode: "cover"
     },
     logo: {
-        width: 649 / 3.25,
-        height: 840 / 3.25,
+        width: 649 / 3.5,
+        height: 840 / 3.5,
         justifyContent: 'flex-start',
         alignSelf: "center",
-        marginTop: "2%"
+        marginTop: "7%"
     },
-    darker: {
-        backgroundColor: 'rgba(0,0,0,0.75)',
+    darkenedContainer: {
+        backgroundColor: 'rgba(0,0,0,0.85)',
         flex: 1
     },
+    logoContainer: {
+        flex: 3
+    },
     loginButton: {
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        paddingTop: 2,
-        paddingBottom: 10,
-        marginBottom: 10,
-        shadowRadius: 5,
-        shadowColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 50,
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderWidth: 5
+        backgroundColor: 'rgba(63, 41, 2, 0.62)',
+        // backgroundColor: 'rgba(0,0,0,0.25)',
+        flex: 1,
+        justifyContent: "center",
     },
     signupButton: {
-        backgroundColor: 'rgba(0,0,0,0.0)',
-        paddingTop: 2,
-        paddingBottom: 10,
-        shadowRadius: 5,
-        shadowColor: 'rgba(0,0,0,0.7)',
-        borderRadius: 50,
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderWidth: 5
+        backgroundColor: 'rgba(45, 2, 63, 0.62)',
+        // backgroundColor: 'rgba(255,255,255,0.15)',
+        flex: 1,
+        justifyContent: "center",
     },
     buttonText: {
         fontFamily: 'Quicksand',
-        fontSize: 34,
+        fontSize: 30,
         textAlign: "center",
         textAlignVertical: "center",
         color: 'white'
     },
     buttons: {
         alignSelf: 'stretch',
-        margin: 4
+        flex: 1,
+        flexDirection: "column"
     },
     buttonPress: {
     }

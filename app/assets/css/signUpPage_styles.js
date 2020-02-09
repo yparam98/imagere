@@ -98,6 +98,18 @@ const signupPageStyles = StyleSheet.create({
         borderWidth: 5,
         alignSelf: "center"
     },
+    nextPageButton: {
+        backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        flex: 1,
+        justifyContent: "center"
+    },
+    buttonText: {
+        fontFamily: 'Quicksand',
+        fontSize: 30,
+        textAlign: "center",
+        textAlignVertical: "center",
+        color: 'white'
+    }
 });
 
 export default signupPageStyles;
