@@ -94,7 +94,7 @@ class ProfileSampler extends Component {
 
     render() {
         return (
-            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={true} animationOut={"bounceOut"}>
+            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={true} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
                 <View style={{ flex: 1, flexDirection: "column" }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
                         {/* {this.renderPencilIcon()} */}
@@ -118,7 +118,7 @@ class ProfileSampler extends Component {
                         </ScrollView>
                     </ScrollView>
 
-                    <Button title="Close" onPress={() => this.toggleModal()} />
+                    {/* <Button title="Close" onPress={() => this.toggleModal()} /> */}
 
                 </View>
             </Modal>
