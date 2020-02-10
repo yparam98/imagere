@@ -32,26 +32,24 @@ const profilePageStyles = StyleSheet.create({
         // backgroundColor: "#003a5c"
     },
     userName: {
-        fontFamily: "Quicksand",
-        fontSize: 48,
-        color: "black",
+        fontFamily: "Quicksand-Medium",
+        fontSize: 35,
+        color: "white",
         padding: 5,
         marginBottom: "0.5%",
         alignSelf: "center"
     },
     userImage: {
-        width: 651 / 4,
-        height: 651 / 4,
+        width: 651 / 5,
+        height: 651 / 5,
         borderRadius: 90,
-        borderColor: "black",
-        borderWidth: 3,
         margin: 10,
         alignSelf: "center"
     },
     helperTextView: {
         fontFamily: "Quicksand",
         fontSize: 12,
-        color: "black",
+        color: "white",
         padding: 5,
         margin: 10,
         alignSelf: "flex-start"

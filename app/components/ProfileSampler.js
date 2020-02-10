@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import profilePageStyles from '../assets/css/profilePage_styles';
+import { LinearGradient } from 'expo-linear-gradient';
 
 class ProfileSampler extends Component {
     constructor(props) {
@@ -14,7 +15,20 @@ class ProfileSampler extends Component {
     state = {
         myUser: this.props.navigation.state.params.myUser,
         myNav: this.props.navigation.state.params.navigation,
-        visibleModal: true
+        visibleModal: true,
+        selector: parseInt(Math.random() * 10),
+        backgroundImg: [
+            ['#659999', '#f4791f'],
+            ['#00B4DB', '#0083B0'],
+            ['#108dc7', '#ef8e38'],
+            ['#0B486B', '#F56217'],
+            ['#ff4b1f', '#1fddff'],
+            ['#FEAC5E', '#C779D0', '#4BC0C8'],
+            ['#00d2ff', '#3a7bd5'],
+            ['#114357', '#F29492'],
+            ['#67B26F', '#4ca2cd'],
+            ['#12c2e9', '#c471ed', '#f64f59']
+        ]
     }
 
     componentDidMount() {
@@ -59,7 +73,7 @@ class ProfileSampler extends Component {
 
     renderDescription() {
         return (
-            <View style={{ borderColor: "black", borderWidth: 2, margin: 5, borderRadius: 90, width: "90%", alignSelf: "center" }}>
+            <View style={{ borderColor: "white", borderWidth: 0.75, margin: 15, borderRadius: 90, width: "90%", alignSelf: "center" }}>
                 <Text style={_.merge({}, profilePageStyles.helperTextView, { alignSelf: "center", fontSize: 18 })}>{this.state.myUser.description}</Text>
             </View>
         )
@@ -67,27 +81,29 @@ class ProfileSampler extends Component {
 
     renderPencilIcon() {
         return (
-            <Image source={{ uri: "https://image.flaticon.com/icons/png/512/61/61456.png" }} style={{ width: 20, height: 20, alignSelf: "flex-end", padding: 10, position: "absolute" }} />
+            <Image source={{ uri: "https://image.flaticon.com/icons/png/512/61/61456.png" }} style={{ margin: 10, width: 20, height: 20, alignSelf: "flex-end", padding: 10, position: "absolute" }} />
         )
     }
 
     toggleModal() {
         this.setState({ visibleModal: !this.state.visibleModal });
-        InteractionManager.runAfterInteractions(()=>{
+        InteractionManager.runAfterInteractions(() => {
             this.state.myNav.pop();
         });
     }
 
     render() {
         return (
-            <Modal isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={true} animationOut={"bounceOut"}>
+            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={true} animationOut={"bounceOut"}>
                 <View style={{ flex: 1, flexDirection: "column" }}>
-                    <ScrollView style={{ alignContent: "center" }} showsVerticalScrollIndicator={false}>
-                        {this.renderPencilIcon()}
+                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
+                        {/* {this.renderPencilIcon()} */}
                         <Image source={{ uri: this.state.myUser.userPicURL }} style={profilePageStyles.userImage} />
                         <Text style={profilePageStyles.userName}>{this.state.myUser.userName}</Text>
-                        <Text style={profilePageStyles.helperTextView}>description</Text>
+                        <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
                         {this.renderDescription()}
+                    </LinearGradient>
+                    <ScrollView style={{ alignContent: "center" }} showsVerticalScrollIndicator={false}>
                         <Text style={profilePageStyles.helperTextView}>new</Text>
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
                             {this.renderNewPics()}

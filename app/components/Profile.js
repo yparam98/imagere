@@ -6,6 +6,7 @@ import _ from 'lodash';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
+import { LinearGradient } from 'expo-linear-gradient';
 //
 class ProfilePage extends Component {
     constructor(props) {
@@ -14,7 +15,20 @@ class ProfilePage extends Component {
             dataURL: "http://myvmlab.senecacollege.ca:6746",
             myUser: this.props.user,
             myProfilePicture: "",
-            profilePictureLoaded: false
+            profilePictureLoaded: false,
+            selector: parseInt(Math.random() * 10),
+            backgroundImg: [
+                ['#659999', '#f4791f'],
+                ['#00B4DB', '#0083B0'],
+                ['#108dc7', '#ef8e38'],
+                ['#0B486B', '#F56217'],
+                ['#ff4b1f', '#1fddff'],
+                ['#FEAC5E', '#C779D0', '#4BC0C8'],
+                ['#00d2ff', '#3a7bd5'],
+                ['#114357', '#F29492'],
+                ['#67B26F', '#4ca2cd'],
+                ['#12c2e9', '#c471ed', '#f64f59']
+            ]
         };
     }
 
@@ -57,7 +71,7 @@ class ProfilePage extends Component {
 
     renderDescription() {
         return (
-            <View style={{ borderColor: "black", borderWidth: 2, margin: 5, borderRadius: 90, width: "90%", alignSelf: "center" }}>
+            <View style={{ borderColor: "white", borderWidth: 0.75, margin: 15, borderRadius: 90, width: "90%", alignSelf: "center" }}>
                 <Text style={_.merge({}, profilePageStyles.helperTextView, { alignSelf: "center", fontSize: 18 })}>{this.state.myUser.description}</Text>
             </View>
         )
@@ -75,11 +89,13 @@ class ProfilePage extends Component {
             <View>
                 {
                     this.state.profilePictureLoaded ? (
-                        <View style={{ marginBottom: 180, marginStart: 5, marginTop: 5, marginEnd: 5 }}>
-                            {this.renderProfilePicture()}
-                            <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
-                            <Text style={profilePageStyles.helperTextView}>description</Text>
-                            {this.renderDescription()}
+                        <View style={{ marginBottom: 180 }}>
+                            <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{padding: "2%"}}>
+                                {this.renderProfilePicture()}
+                                <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
+                                <View style={{borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20}}/>
+                                {this.renderDescription()}
+                            </LinearGradient>
 
                             {/* <Text style={profilePageStyles.helperTextView}>new</Text>
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
