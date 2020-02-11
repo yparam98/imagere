@@ -6,6 +6,7 @@ import _ from 'lodash';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
+import { Icon } from 'react-native-elements';;
 //
 class ProfilePage extends Component {
     constructor(props) {
@@ -26,7 +27,9 @@ class ProfilePage extends Component {
             myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
         });
     }
-
+    on_settings_press() {
+        this.props.navigation.navigate('Settings', { navigation: this.props.navigation});
+    }
     renderProfilePicture() {
         return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
     }
@@ -65,7 +68,7 @@ class ProfilePage extends Component {
 
     renderPencilIcon() {
         return (
-            <Image source={{ uri: "https://image.flaticon.com/icons/png/512/61/61456.png" }} style={{ width: 20, height: 20, alignSelf: "flex-end", padding: 10, position: "absolute" }} />
+            <Icon name="settings" type="material" reverse raised containerStyle={{alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={this.on_settings_press}/>
         )
     }
 

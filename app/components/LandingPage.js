@@ -11,6 +11,11 @@ import UploadPhoto from './UploadPhoto';
 import ProfileSampler from './ProfileSampler';
 import * as Font from 'expo-font';
 import landingPageStyles from '../assets/css/landingPage_styles';
+import UpdateProfilePicture from './UpdateProfilePicture';
+import Disclaimer from './Disclaimer'
+import About from './About';
+import ContactUs from './ContactUs';
+import Settings from './Settings';
 
 class LandingPage extends Component {
 
@@ -103,6 +108,26 @@ const MainNavigator = createStackNavigator(
         },
         ProfileSampler: {
             screen: ProfileSampler,
+            navigationOptions: { headerShown: false }
+        },
+        Settings: {
+            screen: Settings,
+            navigationOptions: { headerShown: false }
+        },
+        UpdateProfilePicture: {
+            screen: UpdateProfilePicture,
+            navigationOptions: { headerShown: false }
+        },
+        Disclaimer: {
+            screen: Disclaimer,
+            navigationOptions: { headerShown: false }
+        },
+        About: {
+            screen: About,
+            navigationOptions: { headerShown: false }
+        },
+        ContactUs: {
+            screen: ContactUs,
             navigationOptions: { headerShown: false }
         }
     },
