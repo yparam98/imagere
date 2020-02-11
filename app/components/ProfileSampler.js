@@ -8,7 +8,7 @@ import profilePageStyles from '../assets/css/profilePage_styles';
 import { LinearGradient } from 'expo-linear-gradient';
 
 class ProfileSampler extends Component {
-    constructor(props) {
+    constructor(props) { 
         super(props);
     }
 
