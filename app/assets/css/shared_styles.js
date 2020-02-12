@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const sharedStyles = StyleSheet.create({
     pageContent: {
         marginTop: 10,
+        marginBottom: 10,
         flex: 1,
         flexDirection: "column",
         justifyContent: 'flex-start'
@@ -11,7 +12,7 @@ const sharedStyles = StyleSheet.create({
         flex: 1,
         height: '100%',
         width: '100%',
-        // resizeMode: "cover",
+        resizeMode: "cover",
         position: "absolute"
     },
     logo: {
@@ -23,7 +24,7 @@ const sharedStyles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     darker: {
-        backgroundColor: 'rgba(0,0,0,0.0)',
+        backgroundColor: 'rgba(0,0,0,0.75)',
         flex: 1
     },
     utilityButton: {

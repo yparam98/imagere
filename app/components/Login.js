@@ -8,7 +8,6 @@ import _ from 'lodash';
 import axios from 'axios';
 import loginPageStyles from '../assets/css/loginPage_styles';
 import sharedStyles from '../assets/css/shared_styles';
-import {LinearGradient} from 'expo-linear-gradient';
 
 class Login extends Component {
     constructor(props) {
@@ -96,7 +95,7 @@ class Login extends Component {
         const { navigate } = this.props.navigation;
 
         return (
-            <LinearGradient colors={['#000046', '#1CB5E0']} style={sharedStyles.backgroundImage}>
+            <ImageBackground source={require('../assets/images/background.png')} style={sharedStyles.backgroundImage} blurRadius={5}>
                 <StatusBar hidden={true} />
                 <View style={sharedStyles.darker} >
                     {
@@ -128,7 +127,7 @@ class Login extends Component {
                         ) : null
                     }
                 </View>
-            </LinearGradient>
+            </ImageBackground>
         );
     }
 }

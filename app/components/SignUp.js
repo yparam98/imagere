@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Image, ImageBackground, StatusBar, Picker, Button, ToastAndroid, TextInput, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { Text, View, Image, ImageBackground, StatusBar, Picker, Button, ToastAndroid } from 'react-native';
+import { TextInput, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import ViewPager from '@react-native-community/viewpager';
 import signupPageStyles from '../assets/css/signUpPage_styles';
@@ -11,8 +12,6 @@ import axios, { post } from 'axios';
 import moment from 'moment';
 import base64Utility from 'base-64';
 import * as ImagePicker from 'expo-image-picker';
-import landingPageStyles from '../assets/css/landingPage_styles';
-import {LinearGradient} from 'expo-linear-gradient';
 
 class SignUp extends Component {
     constructor(props) {
@@ -38,7 +37,6 @@ class SignUp extends Component {
             passwordInvalid: false,
             confirmPasswordInvalid: false,
             descriptionInvalid: false,
-            pagePos: 0
         }
     }
 
@@ -274,7 +272,7 @@ class SignUp extends Component {
 
     render() {
         return (
-            <LinearGradient colors={['#000046', '#1CB5E0']} style={sharedStyles.backgroundImage} >
+            <ImageBackground source={require('../assets/images/background.png')} style={sharedStyles.backgroundImage} blurRadius={5}>
                 <StatusBar hidden={true} />
                 <View style={sharedStyles.darker} >
                     {
@@ -283,10 +281,9 @@ class SignUp extends Component {
                                 <Image source={require('../assets/images/logo.png')} style={sharedStyles.logo} />
 
                                 {/* multi screen signup */}
-                                <ViewPager style={{ flex: 7 }} initialPage={0} ref={(viewpager) => { this.viewpager = viewpager }}
+                                <ViewPager style={{ flex: 1 }} initialPage={0} ref={(viewpager) => { this.viewpager = viewpager }}
                                     onPageScroll={(e) => {
                                         // console.log(e.nativeEvent.offset);
-                                        this.setState({ pagePos: e.nativeEvent.position });
                                         if (e.nativeEvent.offset >= 0.05) {
                                             if (!this.userInputIsValid(e.nativeEvent.position)) {
                                                 this.viewpager.setPage(e.nativeEvent.position)
@@ -306,14 +303,11 @@ class SignUp extends Component {
                                         {this.renderFourthSlide()}
                                     </View>
                                 </ViewPager>
-                                <TouchableOpacity style={signupPageStyles.nextPageButton} onPress={() => this.viewpager.setPage(this.state.pagePos + 1)}>
-                                    <Text style={signupPageStyles.buttonText}>NEXT</Text>
-                                </TouchableOpacity>
                             </View>
                         ) : null
                     }
                 </View>
-            </LinearGradient>
+            </ImageBackground>
         );
     }
 }
