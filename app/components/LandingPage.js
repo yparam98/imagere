@@ -31,18 +31,14 @@ class LandingPage extends Component {
     }
 
     on_login_press = () => {
-        // ToastAndroid.show('login button pressed', ToastAndroid.SHORT);
         this.props.navigation.navigate('Login');
     }
 
     on_signup_press = () => {
-        // ToastAndroid.show('signup button pressed', ToastAndroid.SHORT);
         this.props.navigation.navigate('SignUp');
     }
 
     render() {
-        // const { navigate } = this.props.navigation;
-
         return (
             <ImageBackground source={require('../assets/images/landingPageBackground.png')} style={landingPageStyles.backgroundImage} blurRadius={2}>
                 <StatusBar hidden={true} />
