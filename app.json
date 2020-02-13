@@ -20,10 +20,10 @@
     "ios": {
       "supportsTablet": false,
       "icon": "app/assets/icons/ios_icon_1024.png",
-      "bundleIdentifier": "com.prj666.imagere_grp01"
+      "bundleIdentifier": "com.prj666.imagere"
     },
     "android": {
-      "package": "com.prj666.imagere_grp01",
+      "package": "com.prj666.imagere",
       "icon": "app/assets/icons/android_icon_1024.png"
     }
   }
