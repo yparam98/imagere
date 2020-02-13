@@ -8,6 +8,8 @@ import _ from 'lodash';
 import * as LocationModule from 'expo-location';
 import * as PermissionsModule from 'expo-permissions';
 import Axios from 'axios';
+import {GOOGLE_MAPS_API_KEY} from 'react-native-dotenv';
+import Photo from './Photo';
 
 
 class UploadPhoto extends Component {
@@ -61,26 +63,27 @@ class UploadPhoto extends Component {
     getLocation = async () => {
         let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION);
         let location = await LocationModule.getCurrentPositionAsync({});
-        this.setState({
-            device_location: location
-        });
+        
 
-        // Google Geocoding API to get location from Device GPS module
-        //
-        // Axios.get(
-        //     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-        //     location.coords.latitude + "," + location.coords.longitude +
-        //     "&key=INSERT_API_KEY_HERE"
-        // ).then((response) => {
-        //     console.log(response.data);
-        // });
+        //Google Geocoding API to get location from Device GPS module
+        
+        Axios.get(
+            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+            location.coords.latitude + "," + location.coords.longitude +
+            `&key=${GOOGLE_MAPS_API_KEY}`
+        ).then((response) => {
+            this.setState({
+                //Set proper response to be saved in our server
+                device_location: response["results"][0]
+            });
+        });
     }
 
     render() {
         return (
             <View style={{ flex: 1 }}>
                 {
-                    this.state.fontLoaded ? (
+                    this.state.fontLoaded ? this.state.specPhoto==""?(
                         <View style={uploadPhotoStyles.uploadPictureView}>
                             <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPress={() => this.uploadPhoto()}>
                                 <View>
@@ -93,7 +96,8 @@ class UploadPhoto extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    ) : null
+                    ):<Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userId={this.props._id}/> 
+                    : null
                 }
             </View>
         );
