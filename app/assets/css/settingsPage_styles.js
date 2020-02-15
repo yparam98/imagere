@@ -11,11 +11,10 @@ const settingsPageStyles = StyleSheet.create({
         flexDirection: 'row'
     },
     headingStyle: {
-        fontFamily: 'Quicksand', 
+        fontFamily: 'Quicksand-Medium', 
         fontSize: 34, 
         textAlign: 'center', 
         textAlignVertical: 'center', 
-        fontWeight: 'bold',
         marginBottom: 10
     },
     settingOptionContainer: {

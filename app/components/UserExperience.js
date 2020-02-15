@@ -11,7 +11,8 @@ class UserExperience extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sliderPos: ["newsfeed", "camera", "my profile"]
+            sliderPos: ["newsfeed", "camera", "my profile"],
+            navMod: this.props.navigation.state.params,
         }
     }
 
@@ -59,10 +60,10 @@ class UserExperience extends Component {
                     <Newsfeed navigation={this.props.navigation} />
                 </View>
                 <View key="2">
-                    <UploadPhoto userData={this.props.navigation.state.params.currentUser}/>
+                    <UploadPhoto userData={this.props.navigation.state.params.currentUser} />
                 </View>
                 <View key="3">
-                    <Profile userData={this.props.navigation.state.params.currentUser} />
+                    <Profile userData={this.props.navigation.state.params.currentUser} navigationModule={this.props.navigation}/>
                 </View>
             </ViewPager>
         )

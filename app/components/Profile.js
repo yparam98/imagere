@@ -41,9 +41,14 @@ class ProfilePage extends Component {
             myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
         });
     }
+
     on_settings_press() {
-        this.props.navigation.navigate('Settings', { navigation: this.props.navigation});
+        // console.log(this.props);
+        // console.log("settings page clicked");
+        // console.log(this.props);
+        this.props.navMod.navigate('Settings', { navigation: this.props.navMod});
     }
+
     renderProfilePicture() {
         return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
     }
@@ -82,7 +87,7 @@ class ProfilePage extends Component {
 
     renderPencilIcon() {
         return (
-            <Icon name="settings" type="material" reverse raised containerStyle={{alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={this.on_settings_press}/>
+            <Icon name="settings" type="material" reverse raised containerStyle={{alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()}/>
         )
     }
 
@@ -94,6 +99,7 @@ class ProfilePage extends Component {
                     this.state.profilePictureLoaded ? (
                         <View style={{ marginBottom: 180 }}>
                             <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{padding: "2%"}}>
+                                {this.renderPencilIcon()}
                                 {this.renderProfilePicture()}
                                 <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
                                 <View style={{borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20}}/>
@@ -137,7 +143,8 @@ class Profile extends Component {
     };
 
     async componentDidMount() {
-        // console.log(this.props.userData);
+
+        console.log(this.props);
 
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -159,7 +166,7 @@ class Profile extends Component {
                     this.state.fontLoaded ? (
                         <View style={profilePageStyles.profileView}>
                             <ScrollView style={profilePageStyles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
-                                <ProfilePage user={this.state.userdata} />
+                                <ProfilePage user={this.state.userdata} navMod={this.props.navigationModule}/>
                                 {/* <Text>{this.state.userdata.firstName}</Text> */}
                             </ScrollView>
                         </View>

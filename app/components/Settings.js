@@ -39,6 +39,8 @@ const list = [
 
 class Settings extends Component {
     async componentDidMount() {
+        console.log(this.props);
+
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
@@ -96,7 +98,7 @@ class Settings extends Component {
     render() {
         return (
         <View style={{flexDirection: 'column', paddingTop: 20, paddingBottom: 20}}>
-            <Text style={{fontFamily: 'Quicksand', fontSize: 34, textAlign: 'center', textAlignVertical: 'center', fontWeight: 'bold'}}>Settings</Text>
+            <Text style={{fontFamily: 'Quicksand-Medium', fontSize: 34, textAlign: 'center', textAlignVertical: 'center'}}>Settings</Text>
             <FlatList
                 keyExtractor={this.keyExtractor}
                 contentContainerStyle={{ marginTop: 20 }}
