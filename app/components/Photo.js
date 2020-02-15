@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, Text, View, TouchableOpacity } from "react-native";
+import { Image, Text, View, TouchableOpacity, Button } from "react-native";
 import axios from "axios";
 
 class Photo extends Component {
@@ -15,12 +15,31 @@ class Photo extends Component {
   }
 
   onUpload() {
-    var formData = new FormData();
-    formData.append("uploadedImage", { uri: this.props.uri, type: "image/jpg" });
-    formData.append("userId", this.props.userId);
-    formData.append("locationTaken", this.props.device_location);
+    try {
+      var formData = new FormData();
+      formData.append("pathToPicture", { uri: this.props.uri, name: "uploadedPhotoTest.jpg", type: "image/jpg" });
+      formData.append("userId", this.props.userId);
+      formData.append("locationTaken", this.props.device_location);
 
-    fetch(this.state.dataURL + "/species/upload")
+      fetch(this.state.dataURL + "/species/upload/", {
+        method: "post",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      }).then((res) => {
+        console.log(res);
+      }).then(() => {
+        console.log("success");
+      }).catch((err) => {
+        console(err);
+      }).catch(() => {
+        console.log("failed");
+      });
+    } catch (error) {
+      console.log("errmsg: " + error);
+    }
+    
 
     // axios.post(this.state.dataURL + "/species/upload/", formData, {
     //   headers: {
@@ -39,10 +58,10 @@ class Photo extends Component {
 
   render() {
     return (
-      <View>
-        <Image source={{ uri: this.props.uri }} style={{ width: 305, height: 159 }} />
-        <TouchableOpacity onPress={() => this.onUpload()}>
-          <Text>Upload Picture</Text>
+      <View style={{ flex: 1 }}>
+        <Image source={{ uri: this.props.uri }} style={{ height: 500, aspectRatio: 0.80, alignSelf: "center", margin: 50 }} resizeMode="contain" />
+        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => this.onUpload()}>
+          <Text style={{ fontFamily: "Quicksand", fontSize: 34, borderWidth: 1, borderColor: "black", borderRadius: 10, padding: 10, margin: 20 }}>Upload Picture</Text>
         </TouchableOpacity>
       </View>
     );
