@@ -144,8 +144,6 @@ class Profile extends Component {
 
     async componentDidMount() {
 
-        console.log(this.props);
-
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
