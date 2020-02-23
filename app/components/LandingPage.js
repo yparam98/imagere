@@ -17,6 +17,8 @@ import Disclaimer from './Disclaimer'
 import About from './About';
 import ContactUs from './ContactUs';
 import Settings from './Settings';
+import UpdateUserInformation from './UpdateUserInformation';
+import UpdatePassword from './UpdatePassword';
 
 class LandingPage extends Component {
 
@@ -125,6 +127,14 @@ const MainNavigator = createStackNavigator(
         },
         ContactUs: {
             screen: ContactUs,
+            navigationOptions: { headerShown: false }
+        },
+        UpdateUserInformation: {
+            screen: UpdateUserInformation,
+            navigationOptions: { headerShown: false }
+        },
+        UpdatePassword: {
+            screen: UpdatePassword,
             navigationOptions: { headerShown: false }
         }
     },
