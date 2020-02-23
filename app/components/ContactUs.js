@@ -5,7 +5,7 @@ import _ from 'lodash';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
 
-class About extends Component {
+class ContactUs extends Component {
     constructor(props) {
         super(props);
     }
@@ -31,4 +31,4 @@ class About extends Component {
     }
 }
 
-export default About;
+export default ContactUs;
