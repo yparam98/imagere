@@ -8,7 +8,7 @@ import axios from 'axios';
 import Buffer from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';;
-//
+
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
@@ -34,6 +34,8 @@ class ProfilePage extends Component {
     }
 
     async componentDidMount() {
+        //console.log("Test ProfilePage");
+        //console.log(this.props.user);
         let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
 
         this.setState({
@@ -45,8 +47,8 @@ class ProfilePage extends Component {
     on_settings_press() {
         // console.log(this.props);
         // console.log("settings page clicked");
-        // console.log(this.props);
-        this.props.navMod.navigate('Settings', { navigation: this.props.navMod});
+         //console.log(this.props.user);
+        this.props.navMod.navigate('Settings', { navigation: this.props.navMod, user: this.props.user });
     }
 
     renderProfilePicture() {

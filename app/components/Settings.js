@@ -39,7 +39,8 @@ const list = [
 
 class Settings extends Component {
     async componentDidMount() {
-        console.log(this.props);
+        console.log("test Settings:");
+        console.log(this.props.navigation.state.params.user);
 
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -50,8 +51,14 @@ class Settings extends Component {
     
     on_option_press = (optionName) => {
         switch(optionName){
-            case 'Update Profile Photo':
-                this.props.navigation.navigate('UpdateProfilePicture');
+           case 'Update Profile Photo':
+                this.props.navigation.navigate('UpdateProfilePicture', { user: this.props.navigation.state.params.user });
+                break;
+            case 'Update User Information':
+               this.props.navigation.navigate('UpdateUserInformation', { user: this.props.navigation.state.params.user });
+                break;
+            case 'Update Password':
+                this.props.navigation.navigate('UpdatePassword', { user: this.props.navigation.state.params.user });
                 break;
             case 'Disclaimer':
                 this.props.navigation.navigate('Disclaimer');
