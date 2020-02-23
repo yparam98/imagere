@@ -17,7 +17,7 @@ class Photo extends Component {
   onUpload() {
     try {
       var formData = new FormData();
-      formData.append("pathToPicture", { uri: this.props.uri, name: "uploadedPhotoTest.jpg", type: "image/jpg" });
+      formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
       formData.append("userId", this.props.userId);
       formData.append("locationTaken", this.props.device_location);
 
