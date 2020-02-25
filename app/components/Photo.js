@@ -10,10 +10,6 @@ class Photo extends Component {
     };
   }
 
-  componentDidMount() {
-    // console.log("props: " + JSON.stringify(this.props));
-  }
-
   onUpload() {
     try {
       var formData = new FormData();
