@@ -48,9 +48,11 @@ class UploadPhoto extends Component {
         let options = { base64: true };
         let taken_photo = await ImagePicker.launchImageLibraryAsync();
 
-        this.setState({
-            specPhoto: taken_photo
-        });
+        if (taken_photo.uri != undefined) {
+            this.setState({
+                specPhoto: taken_photo
+            });
+        }
     }
 
     openCamera = async () => {
@@ -59,9 +61,11 @@ class UploadPhoto extends Component {
         let options = { base64: true, skipProcessing: true };
         let taken_photo = await ImagePicker.launchCameraAsync();
 
-        this.setState({
-            specPhoto: taken_photo
-        });
+        if (taken_photo.uri != undefined) {
+            this.setState({
+                specPhoto: taken_photo
+            });
+        }
     }
 
     getLocation = async () => {
