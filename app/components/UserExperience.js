@@ -6,6 +6,7 @@ import ViewPager from '@react-native-community/viewpager';
 import Profile from './Profile';
 import UploadPhoto from './UploadPhoto';
 import userExperienceStyles from '../assets/css/userExperience_styles';
+import axios from 'axios';
 
 class UserExperience extends Component {
     constructor(props) {
@@ -13,6 +14,7 @@ class UserExperience extends Component {
         this.state = {
             sliderPos: ["newsfeed", "camera", "my profile"],
             navMod: this.props.navigation.state.params,
+            dataURL: "http://myvmlab.senecacollege.ca:6746",
         }
     }
 
@@ -45,7 +47,15 @@ class UserExperience extends Component {
                     text: 'Cancel',
                     style: 'cancel',
                 },
-                { text: 'Logout', onPress: () => this.on_login_press() },
+                {
+                    text: 'Logout', onPress: () => {
+                        axios.post(
+                            this.state.dataURL + "/logout"
+                        ).then(() => {
+                            this.props.navigation.popToTop();
+                        });
+                    }
+                },
             ]
         );
     }
@@ -63,7 +73,7 @@ class UserExperience extends Component {
                     <UploadPhoto userData={this.props.navigation.state.params.currentUser} />
                 </View>
                 <View key="3">
-                    <Profile userData={this.props.navigation.state.params.currentUser} navigationModule={this.props.navigation}/>
+                    <Profile userData={this.props.navigation.state.params.currentUser} navigationModule={this.props.navigation} />
                 </View>
             </ViewPager>
         )
