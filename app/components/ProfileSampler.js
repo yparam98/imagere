@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, InteractionManager } from 'react-native';
+import { Text, View, Image, Button, InteractionManager, TouchableOpacity, UIManager } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import { LinearGradient } from 'expo-linear-gradient';
+import settingsPageStyles from '../assets/css/settingsPage_styles';
 
 class ProfileSampler extends Component {
     constructor(props) { 
@@ -79,9 +80,11 @@ class ProfileSampler extends Component {
         )
     }
 
-    renderPencilIcon() {
+    renderBackIcon() {
         return (
-            <Image source={{ uri: "https://image.flaticon.com/icons/png/512/61/61456.png" }} style={{ margin: 10, width: 20, height: 20, alignSelf: "flex-end", padding: 10, position: "absolute" }} />
+            <TouchableOpacity style={{ alignSelf: "flex-start" }} onPress={() => this.props.navigation.pop()}>
+                <Image source={require("../assets/icons/ios_back_arrow.png")} style={settingsPageStyles.backIcon} />
+            </TouchableOpacity>
         )
     }
 
@@ -94,10 +97,10 @@ class ProfileSampler extends Component {
 
     render() {
         return (
-            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={true} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
+            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={false} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
                 <View style={{ flex: 1, flexDirection: "column" }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
-                        {/* {this.renderPencilIcon()} */}
+                        {/* {this.renderBackIcon()} */}
                         <Image source={{ uri: this.state.myUser.userPicURL }} style={profilePageStyles.userImage} />
                         <Text style={profilePageStyles.userName}>{this.state.myUser.userName}</Text>
                         <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />

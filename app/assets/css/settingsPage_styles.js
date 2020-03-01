@@ -98,7 +98,12 @@ const settingsPageStyles = StyleSheet.create({
         textAlign: "center",
         textAlignVertical: "center",
         color: 'black'
-    }
+    },
+    backIcon: {
+        width: 512 / 15,
+        height: 512 / 15,
+        alignSelf: 'flex-start'
+    },
 });
 
 export default settingsPageStyles;

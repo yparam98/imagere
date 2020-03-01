@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { ListItem } from 'react-native-elements';
-import { View, StyleSheet, Text  } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image  } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
+import settingsPageStyles from '../assets/css/settingsPage_styles';
 
 const list = [
       {
@@ -105,6 +106,9 @@ class Settings extends Component {
     render() {
         return (
         <View style={{flexDirection: 'column', paddingTop: 20, paddingBottom: 20}}>
+                <TouchableOpacity style={{ alignSelf: "flex-start" }} onPress={() => this.props.navigation.pop()}>
+                <Image source={require("../assets/icons/ios_back_arrow.png")} style={settingsPageStyles.backIcon} />
+            </TouchableOpacity>
             <Text style={{fontFamily: 'Quicksand-Medium', fontSize: 34, textAlign: 'center', textAlignVertical: 'center'}}>Settings</Text>
             <FlatList
                 keyExtractor={this.keyExtractor}

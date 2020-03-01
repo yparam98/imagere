@@ -7,6 +7,7 @@ import Profile from './Profile';
 import UploadPhoto from './UploadPhoto';
 import userExperienceStyles from '../assets/css/userExperience_styles';
 import axios from 'axios';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class UserExperience extends Component {
     constructor(props) {

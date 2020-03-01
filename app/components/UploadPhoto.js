@@ -93,12 +93,12 @@ class UploadPhoto extends Component {
                 {
                     this.state.fontLoaded ? this.state.specPhoto == "" ? (
                         <View style={uploadPhotoStyles.uploadPictureView}>
-                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPress={() => this.uploadPhoto()}>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPressIn={() => this.uploadPhoto()}>
                                 <View>
                                     <Image source={require('../assets/icons/upload_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "purple" })} onPress={() => this.openCamera()}>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "purple" })} onPressIn={() => this.openCamera()}>
                                 <View>
                                     <Image source={require('../assets/icons/camera_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
                                 </View>

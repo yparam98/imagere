@@ -140,7 +140,7 @@ const MainNavigator = createStackNavigator(
     },
     {
         headerMode: 'none',
-        mode: 'modal'
+        // mode: 'modal'
     }
 );
 
