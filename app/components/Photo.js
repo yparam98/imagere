@@ -1,67 +1,68 @@
 import React, { Component } from "react";
-import { Image, Text, View, TouchableOpacity, Button } from "react-native";
+import { Image, Text, View, TouchableOpacity, Button, ActivityIndicator } from "react-native";
 import axios from "axios";
+import ResultsView from "./ResultsDisplay";
 
 class Photo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dataURL: "http://myvmlab.senecacollege.ca:6746",
-    };
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			dataURL: "http://myvmlab.senecacollege.ca:6746",
+			resultsObj: "",
+			submitted: false
+		};
+	}
 
-  onUpload() {
-    try {
-      var formData = new FormData();
-      formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
-      formData.append("userId", this.props.userId);
-      formData.append("locationTaken", this.props.device_location);
+	async onUpload() {
+		this.setState({
+			submitted: true
+		});
 
-      fetch(this.state.dataURL + "/species/upload/", {
-        method: "post",
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-        body: formData,
-      }).then((res) => {
-        console.log(res);
-      }).then(() => {
-        console.log("success");
-      }).catch((err) => {
-        console(err);
-      }).catch(() => {
-        console.log("failed");
-      });
-    } catch (error) {
-      console.log("errmsg: " + error);
-    }
-    
+		try {
+			var formData = new FormData();
+			formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
+			formData.append("userId", this.props.userId);
+			formData.append("locationTaken", this.props.device_location);
 
-    // axios.post(this.state.dataURL + "/species/upload/", formData, {
-    //   headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   }
-    // }).then(() => {
-    //   console.log("success");
-    // }).then((data) => {
-    //   console.log("success with object: " + data)
-    // }).catch(() => {
-    //   console.log("error");
-    // }).catch((err) => {
-    //   console.log("error with message: " + err);
-    // });
-  }
+			axios({
+				method: 'post',
+				url: this.state.dataURL + "/species/upload/",
+				data: formData,
+				headers: { "Content-Type": "multipart/form-data" }
+			}).then((incomingResponse) => {
+				this.setState({
+					resultsObj: incomingResponse.data
+				});
+			}).catch((errObj) => {
+				console.log(errObj);
+			});
+		} catch (error) {
+			console.log(error)
+		}
+	}
 
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <Image source={{ uri: this.props.uri }} style={{ height: 500, aspectRatio: 0.80, alignSelf: "center", margin: 50 }} resizeMode="contain" />
-        <TouchableOpacity style={{ alignSelf: "center" }} onPress={() => this.onUpload()}>
-          <Text style={{ fontFamily: "Quicksand", fontSize: 34, borderWidth: 1, borderColor: "black", borderRadius: 10, padding: 10, margin: 20 }}>Upload Picture</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+	render() {
+		return (
+			<View style={{ flex: 1 }}>
+				{
+					!this.state.submitted ? (
+						<View>
+							<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, alignSelf: "center", margin: 10 }} resizeMode="contain" />
+							<TouchableOpacity style={{ alignSelf: "center" }} onPress={() => this.onUpload()}>
+								<Text style={{ fontFamily: "Quicksand", fontSize: 34, borderWidth: 1, borderColor: "black", borderRadius: 10, padding: 10, margin: 20 }}>Upload Picture</Text>
+							</TouchableOpacity>
+						</View>
+					) : <View>
+							{
+								this.state.resultsObj == "" ? (
+									<View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="#0000ff" /></View>
+								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} />
+							}
+						</View>
+				}
+			</View>
+		);
+	}
 }
 
 export default Photo;

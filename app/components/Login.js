@@ -81,19 +81,19 @@ class Login extends Component {
                         usernameInvalid: true,
                         passwordInvalid: true
                     });
-                    ToastAndroid.show("account does not exist!", ToastAndroid.SHORT);
+                    // ToastAndroid.show("account does not exist!", ToastAndroid.SHORT);
                 } else if (err == 2) {
                     this.setState({
                         usernameInvalid: false,
                         passwordInvalid: true
                     });
-                    ToastAndroid.show("password incorrect!", ToastAndroid.SHORT);
+                    // ToastAndroid.show("password incorrect!", ToastAndroid.SHORT);
                 } else if (err == 3) {
                     this.setState({
                         usernameInvalid: true,
                         passwordInvalid: true
                     });
-                    ToastAndroid.show("missing credentials!", ToastAndroid.SHORT);
+                    // ToastAndroid.show("missing credentials!", ToastAndroid.SHORT);
                 } else {
                     console.log("log in not working...");
                 }
