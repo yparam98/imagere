@@ -13,7 +13,7 @@ class ResultsView extends Component {
     render() {
         return (
             <View style={{ backgroundColor: "rgb(0,0,0)" }}>
-                <Image source={{ uri: this.props.inSpeciesPic }} style={profilePageStyles.userImage} resizeMode="contain" />
+                <Image source={{ uri: this.props.inSpeciesPic }} style={{ width: 651 / 5, height: 651 / 5, borderRadius: 15, margin: 10, alignSelf: "center" }} resizeMode="contain" />
                 <FlatList data={this.state.myResults.nnResult} renderItem={({ item }) =>
                     <View style={{ backgroundColor: "rgba(255, 255, 255, 0.5)", margin: 10, padding: 15, elevation: 3, borderRadius: 15, alignContent: "center" }}>
                         <Text style={{ fontFamily: "Quicksand", fontSize: 20 }}>Name: {item.label}</Text>
