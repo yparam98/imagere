@@ -55,8 +55,8 @@ class Photo extends Component {
 					) : <View>
 							{
 								this.state.resultsObj == "" ? (
-									<View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="#0000ff" /></View>
-								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} />
+									<View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
+								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} navigationModule={this.props.navigationModule}/>
 							}
 						</View>
 				}

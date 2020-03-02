@@ -104,7 +104,7 @@ class UploadPhoto extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    ) : <Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userId={this.props.userData._id} /> : null
+                    ) : <Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userId={this.props.userData._id} navigationModule={this.props.navigationModule}/> : null
                 }
             </View>
         );
