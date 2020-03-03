@@ -9,7 +9,6 @@
       "android",
       "web"
     ],
-    "version": "2.0.0",
     "orientation": "portrait",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -20,7 +19,8 @@
     "ios": {
       "supportsTablet": false,
       "icon": "app/assets/icons/ios_icon_1024.png",
-      "bundleIdentifier": "com.prj666.imagere"
+      "bundleIdentifier": "com.prj666.imagere",
+      "versionCode" : 2
     },
     "android": {
       "package": "com.prj666.imagere",

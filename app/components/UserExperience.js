@@ -16,6 +16,7 @@ class UserExperience extends Component {
             sliderPos: ["newsfeed", "camera", "my profile"],
             navMod: this.props.navigation.state.params,
             dataURL: "http://myvmlab.senecacollege.ca:6746",
+            currentUserObject: this.props.navigation.state.params.currentUser,
         }
     }
 
@@ -71,10 +72,10 @@ class UserExperience extends Component {
                     <Newsfeed navigation={this.props.navigation} />
                 </View>
                 <View key="2">
-                    <UploadPhoto userData={this.props.navigation.state.params.currentUser} navigationModule={this.props.navigation}/>
+                    <UploadPhoto userData={this.state.currentUserObject} navigationModule={this.props.navigation}/>
                 </View>
                 <View key="3">
-                    <Profile userData={this.props.navigation.state.params.currentUser} navigationModule={this.props.navigation} />
+                    <Profile userData={this.state.currentUserObject} navigationModule={this.props.navigation} />
                 </View>
             </ViewPager>
         )
