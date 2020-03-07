@@ -8,6 +8,8 @@ import _ from 'lodash';
 import * as LocationModule from 'expo-location';
 import * as PermissionsModule from 'expo-permissions';
 import Axios from 'axios';
+import { GOOGLE_MAPS_API_KEY } from 'react-native-dotenv';
+import Photo from './Photo';
 
 
 class UploadPhoto extends Component {
@@ -41,63 +43,71 @@ class UploadPhoto extends Component {
     }
 
     uploadPhoto = async () => {
+        this.getLocation();
+
         let options = { base64: true };
         let taken_photo = await ImagePicker.launchImageLibraryAsync();
 
-        this.setState({
-            specPhoto: taken_photo
-        });
+        if (taken_photo.uri != undefined) {
+            this.setState({
+                specPhoto: taken_photo
+            });
+        }
     }
 
     openCamera = async () => {
+        this.getLocation();
+
         let options = { base64: true, skipProcessing: true };
         let taken_photo = await ImagePicker.launchCameraAsync();
 
-        this.setState({
-            specPhoto: taken_photo
-        });
+        if (taken_photo.uri != undefined) {
+            this.setState({
+                specPhoto: taken_photo
+            });
+        }
     }
 
     getLocation = async () => {
         let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION);
         let location = await LocationModule.getCurrentPositionAsync({});
-        this.setState({
-            device_location: location
-        });
 
-        // Google Geocoding API to get location from Device GPS module
-        //
-        // Axios.get(
-        //     "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-        //     location.coords.latitude + "," + location.coords.longitude +
-        //     "&key=INSERT_API_KEY_HERE"
-        // ).then((response) => {
-        //     console.log(response.data);
-        // });
+
+        //Google Geocoding API to get location from Device GPS module
+
+        Axios.get(
+            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+            location.coords.latitude + "," + location.coords.longitude +
+            `&key=${GOOGLE_MAPS_API_KEY}`
+        ).then((response) => {
+            var locationStr = response.data.plus_code.compound_code;
+            this.setState({
+                device_location: locationStr.substring(locationStr.indexOf(' ') + 1, locationStr.length)
+            });
+        });
     }
 
     render() {
         return (
             <View style={{ flex: 1 }}>
                 {
-                    this.state.fontLoaded ? (
+                    this.state.fontLoaded ? this.state.specPhoto == "" ? (
                         <View style={uploadPhotoStyles.uploadPictureView}>
-                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPress={() => this.uploadPhoto()}>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPressIn={() => this.uploadPhoto()}>
                                 <View>
                                     <Image source={require('../assets/icons/upload_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "purple" })} onPress={() => this.getLocation()}>
+                            <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "purple" })} onPressIn={() => this.openCamera()}>
                                 <View>
                                     <Image source={require('../assets/icons/camera_icon_white.png')} style={uploadPhotoStyles.cameraIconStyle} />
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    ) : null
+                    ) : <Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userId={this.props.userData._id} navigationModule={this.props.navigationModule}/> : null
                 }
             </View>
         );
     }
 }
-
 export default UploadPhoto;

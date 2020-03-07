@@ -5,7 +5,7 @@ const uploadPhotoStyles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        backgroundColor: "lightgrey"
+        backgroundColor: "white"
     },
     cameraIconStyle: {
         width: 100,
@@ -17,9 +17,8 @@ const uploadPhotoStyles = StyleSheet.create({
         backgroundColor: "rgba(255,255,255,1.0)",
         flex: 1,
         justifyContent: "center",
-        borderRadius: 0,
-        borderWidth: 0,
-        borderColor: "black",
+        borderRadius: 45,
+        margin: 20
     },
     regularText: {
         fontFamily: 'Quicksand',

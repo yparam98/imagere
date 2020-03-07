@@ -55,39 +55,49 @@ class Login extends Component {
         // this.loginAuthenticated(myNavigate);
 
         // BYPASSING LOGIN AUTHENTICATION... UNCOMMENT BEFORE PRODUCTION!!!
-        axios.post(this.state.dataURL + "/login", {
-            "logEmail": this.state.username,
-            "logPassword": this.state.password
-        }).then((response) => {
-            if (response.data.loginState != 0) {
-                throw (response.data.loginState);
-            }
-            else {
-                this.setState({
-                    currentUser: response.data.curUser
-                });
-                this.loginAuthenticated(myNavigate);
-            }
-        }).catch((err) => {
-            if (err == 1) {
-                this.setState({
-                    usernameInvalid: true,
-                    passwordInvalid: true
-                });
-                ToastAndroid.show("account does not exist!", ToastAndroid.SHORT);
-            } else if (err == 2) {
-                this.setState({
-                    usernameInvalid: false,
-                    passwordInvalid: true
-                });
-                ToastAndroid.show("password incorrect!", ToastAndroid.SHORT);
-            } else if (err == 3) {
-                this.setState({
-                    usernameInvalid: true,
-                    passwordInvalid: true
-                });
-                ToastAndroid.show("missing credentials!", ToastAndroid.SHORT);
-            }
+
+        axios.post(
+            this.state.dataURL + "/logout"
+        ).then(() => {
+            axios.post(this.state.dataURL + "/login", {
+                "logEmail": this.state.username,
+                "logPassword": this.state.password
+            }).then((response) => {
+                if (response.data.loginState != 0) {
+                    throw (response.data.loginState);
+                }
+                else {
+                    if (response.data.curUser != null || response.data.curUser != undefined) {
+                        this.setState({
+                            currentUser: response.data.curUser
+                        });
+
+                        this.loginAuthenticated(myNavigate);
+                    }
+                }
+            }).catch((err) => {
+                if (err == 1) {
+                    this.setState({
+                        usernameInvalid: true,
+                        passwordInvalid: true
+                    });
+                    // ToastAndroid.show("account does not exist!", ToastAndroid.SHORT);
+                } else if (err == 2) {
+                    this.setState({
+                        usernameInvalid: false,
+                        passwordInvalid: true
+                    });
+                    // ToastAndroid.show("password incorrect!", ToastAndroid.SHORT);
+                } else if (err == 3) {
+                    this.setState({
+                        usernameInvalid: true,
+                        passwordInvalid: true
+                    });
+                    // ToastAndroid.show("missing credentials!", ToastAndroid.SHORT);
+                } else {
+                    console.log("log in not working...");
+                }
+            });
         });
     }
 

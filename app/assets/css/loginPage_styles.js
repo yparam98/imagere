@@ -4,7 +4,7 @@ const loginPageStyles = StyleSheet.create({
     inputField: {
         backgroundColor: 'rgba(255,255,255,0.3)',
         borderColor: 'rgba(255,255,255,0.3)',
-        paddingTop: 2,
+        paddingTop: 10,
         paddingBottom: 10,
         alignSelf: 'stretch',
         marginStart: 20,
@@ -13,7 +13,7 @@ const loginPageStyles = StyleSheet.create({
         shadowRadius: 5,
         shadowColor: 'rgba(0,0,0,0.7)',
         borderRadius: 50,
-        borderWidth: 5,
+        borderWidth: 0,
         fontFamily: 'Quicksand',
         fontSize: 30,
         textAlign: "center",
@@ -33,17 +33,17 @@ const loginPageStyles = StyleSheet.create({
     },
     successButton: {
         backgroundColor: 'rgba(0,255,0,0.4)',
-        paddingTop: 2,
-        paddingBottom: 5,
-        paddingStart: 20,
-        paddingEnd: 20,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingStart: 25,
+        paddingEnd: 25,
         marginEnd: 20,
         marginBottom: 10,
         shadowRadius: 5,
         shadowColor: 'rgba(0,0,0,0.7)',
         borderRadius: 50,
         borderColor: 'rgba(0,255,0,0.4)',
-        borderWidth: 5
+        borderWidth: 0
     },
     buttonPress: {
 
@@ -57,10 +57,10 @@ const loginPageStyles = StyleSheet.create({
     },
     helpButton: {
         backgroundColor: 'rgba(255,0,0,0.4)',
-        paddingTop: 2,
-        paddingBottom: 5,
-        paddingStart: 20,
-        paddingEnd: 20,
+        paddingTop: 8,
+        paddingBottom: 8,
+        paddingStart: 25,
+        paddingEnd: 25,
         marginEnd: 20,
         alignSelf: 'flex-end',
         marginBottom: 10,
@@ -68,7 +68,7 @@ const loginPageStyles = StyleSheet.create({
         shadowColor: 'rgba(0,0,0,0.7)',
         borderRadius: 50,
         borderColor: 'rgba(255,0,0,0.4)',
-        borderWidth: 5
+        borderWidth: 0
     },
 });
 

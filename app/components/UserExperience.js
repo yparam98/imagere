@@ -6,12 +6,17 @@ import ViewPager from '@react-native-community/viewpager';
 import Profile from './Profile';
 import UploadPhoto from './UploadPhoto';
 import userExperienceStyles from '../assets/css/userExperience_styles';
+import axios from 'axios';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class UserExperience extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sliderPos: ["newsfeed", "camera", "my profile"]
+            sliderPos: ["newsfeed", "camera", "my profile"],
+            navMod: this.props.navigation.state.params,
+            dataURL: "http://myvmlab.senecacollege.ca:6746",
+            currentUserObject: this.props.navigation.state.params.currentUser,
         }
     }
 
@@ -44,7 +49,15 @@ class UserExperience extends Component {
                     text: 'Cancel',
                     style: 'cancel',
                 },
-                { text: 'Logout', onPress: () => this.on_login_press() },
+                {
+                    text: 'Logout', onPress: () => {
+                        axios.post(
+                            this.state.dataURL + "/logout"
+                        ).then(() => {
+                            this.props.navigation.popToTop();
+                        });
+                    }
+                },
             ]
         );
     }
@@ -59,10 +72,10 @@ class UserExperience extends Component {
                     <Newsfeed navigation={this.props.navigation} />
                 </View>
                 <View key="2">
-                    <UploadPhoto />
+                    <UploadPhoto userData={this.state.currentUserObject} navigationModule={this.props.navigation}/>
                 </View>
                 <View key="3">
-                    <Profile userData={this.props.navigation.state.params.currentUser} />
+                    <Profile userData={this.state.currentUserObject} navigationModule={this.props.navigation} />
                 </View>
             </ViewPager>
         )

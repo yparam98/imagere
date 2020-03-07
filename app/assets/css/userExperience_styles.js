@@ -25,6 +25,12 @@ const userExperienceStyles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center'
     },
+    utilityText: {
+        fontFamily: 'Quicksand',
+        fontSize: 15,
+        color: 'white',
+        alignSelf: 'center'
+    },
     bottomNavBar: {
         backgroundColor: 'rgba(0,0,0,0.90)',
         flexDirection: 'row',

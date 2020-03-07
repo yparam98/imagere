@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, ImageBackground, Button, Alert, TouchableHighlight, ToastAndroid, StatusBar } from 'react-native';
+import { Text, View, Image, StyleSheet, ImageBackground, Button, Alert, TouchableHighlight, ToastAndroid, StatusBar, TouchableOpacity } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Login from './Login';
@@ -10,7 +10,15 @@ import UserExperience from './UserExperience';
 import UploadPhoto from './UploadPhoto';
 import ProfileSampler from './ProfileSampler';
 import * as Font from 'expo-font';
+import { LinearGradient } from 'expo-linear-gradient';
 import landingPageStyles from '../assets/css/landingPage_styles';
+import UpdateProfilePicture from './UpdateProfilePicture';
+import Disclaimer from './Disclaimer'
+import About from './About';
+import ContactUs from './ContactUs';
+import Settings from './Settings';
+import UpdateUserInformation from './UpdateUserInformation';
+import UpdatePassword from './UpdatePassword';
 
 class LandingPage extends Component {
 
@@ -21,6 +29,7 @@ class LandingPage extends Component {
     async componentDidMount() {
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
+            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
         });
 
         this.setState({
@@ -29,18 +38,14 @@ class LandingPage extends Component {
     }
 
     on_login_press = () => {
-        // ToastAndroid.show('login button pressed', ToastAndroid.SHORT);
         this.props.navigation.navigate('Login');
     }
 
     on_signup_press = () => {
-        // ToastAndroid.show('signup button pressed', ToastAndroid.SHORT);
         this.props.navigation.navigate('SignUp');
     }
 
     render() {
-        // const { navigate } = this.props.navigation;
-
         return (
             <ImageBackground source={require('../assets/images/landingPageBackground.png')} style={landingPageStyles.backgroundImage} blurRadius={2}>
                 <StatusBar hidden={true} />
@@ -50,14 +55,14 @@ class LandingPage extends Component {
                             <View style={landingPageStyles.landingPageContent}>
                                 <Image source={require('../assets/images/logo.png')} style={landingPageStyles.logo} />
                                 <View style={landingPageStyles.buttons}>
-                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={this.on_login_press}>
+                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={() => this.on_login_press()}>
                                         <View style={landingPageStyles.loginButton}>
-                                            <Text style={landingPageStyles.buttonText}>I have an account!</Text>
+                                            <Text style={landingPageStyles.buttonText}>login</Text>
                                         </View>
                                     </TouchableHighlight>
-                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={this.on_signup_press}>
+                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={() => this.on_signup_press()}>
                                         <View style={landingPageStyles.signupButton}>
-                                            <Text style={landingPageStyles.buttonText}>I don't have an account!</Text>
+                                            <Text style={landingPageStyles.buttonText}>sign up</Text>
                                         </View>
                                     </TouchableHighlight>
                                 </View>
@@ -66,7 +71,6 @@ class LandingPage extends Component {
                     }
                 </View>
             </ImageBackground>
-
         );
     }
 }
@@ -104,11 +108,39 @@ const MainNavigator = createStackNavigator(
         ProfileSampler: {
             screen: ProfileSampler,
             navigationOptions: { headerShown: false }
+        },
+        Settings: {
+            screen: Settings,
+            navigationOptions: { headerShown: false }
+        },
+        UpdateProfilePicture: {
+            screen: UpdateProfilePicture,
+            navigationOptions: { headerShown: false }
+        },
+        Disclaimer: {
+            screen: Disclaimer,
+            navigationOptions: { headerShown: false }
+        },
+        About: {
+            screen: About,
+            navigationOptions: { headerShown: false }
+        },
+        ContactUs: {
+            screen: ContactUs,
+            navigationOptions: { headerShown: false }
+        },
+        UpdateUserInformation: {
+            screen: UpdateUserInformation,
+            navigationOptions: { headerShown: false }
+        },
+        UpdatePassword: {
+            screen: UpdatePassword,
+            navigationOptions: { headerShown: false }
         }
     },
     {
         headerMode: 'none',
-        mode: 'modal'
+        // mode: 'modal'
     }
 );
 

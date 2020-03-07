@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.5.0",
+    "version": "2.0.0",
     "orientation": "portrait",
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +24,8 @@
     },
     "android": {
       "package": "com.prj666.imagere",
-      "icon": "app/assets/icons/android_icon_1024.png"
+      "icon": "app/assets/icons/android_icon_1024.png",
+      "versionCode": 5
     }
   }
 }

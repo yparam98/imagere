@@ -6,25 +6,54 @@ import _ from 'lodash';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
-//
+import { LinearGradient } from 'expo-linear-gradient';
+import { Icon } from 'react-native-elements';;
+
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dataURL: "http://myvmlab.senecacollege.ca:6746",
             myUser: this.props.user,
-            myProfilePicture: "",
-            profilePictureLoaded: false
+            myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
+            selector: parseInt(Math.random() * 10),
+            backgroundImg: [
+                ['#659999', '#f4791f'],
+                ['#00B4DB', '#0083B0'],
+                ['#108dc7', '#ef8e38'],
+                ['#0B486B', '#F56217'],
+                ['#ff4b1f', '#1fddff'],
+                ['#FEAC5E', '#C779D0', '#4BC0C8'],
+                ['#00d2ff', '#3a7bd5'],
+                ['#114357', '#F29492'],
+                ['#67B26F', '#4ca2cd'],
+                ['#12c2e9', '#c471ed', '#f64f59']
+            ]
         };
     }
 
     async componentDidMount() {
-        let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+        //console.log("Test ProfilePage");
+        //console.log(this.props.user);
 
-        this.setState({
-            profilePictureLoaded: true,
-            myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-        });
+        try {
+            let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+
+            this.setState({
+                myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
+            });
+        } catch (error) {
+            this.setState({
+                myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
+            });
+        }
+    }
+
+    on_settings_press() {
+        // console.log(this.props);
+        // console.log("settings page clicked");
+        //console.log(this.props.user);
+        this.props.navMod.navigate('Settings', { navigation: this.props.navMod, user: this.props.user });
     }
 
     renderProfilePicture() {
@@ -57,7 +86,7 @@ class ProfilePage extends Component {
 
     renderDescription() {
         return (
-            <View style={{ borderColor: "black", borderWidth: 2, margin: 5, borderRadius: 90, width: "90%", alignSelf: "center" }}>
+            <View style={{ borderColor: "white", borderWidth: 0.75, margin: 15, borderRadius: 90, width: "90%", alignSelf: "center" }}>
                 <Text style={_.merge({}, profilePageStyles.helperTextView, { alignSelf: "center", fontSize: 18 })}>{this.state.myUser.description}</Text>
             </View>
         )
@@ -65,7 +94,7 @@ class ProfilePage extends Component {
 
     renderPencilIcon() {
         return (
-            <Image source={{ uri: "https://image.flaticon.com/icons/png/512/61/61456.png" }} style={{ width: 20, height: 20, alignSelf: "flex-end", padding: 10, position: "absolute" }} />
+            <Icon name="settings" type="material" reverse raised containerStyle={{ alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()} />
         )
     }
 
@@ -73,15 +102,16 @@ class ProfilePage extends Component {
     renderProfilePage() {
         return (
             <View>
-                {
-                    this.state.profilePictureLoaded ? (
-                        <View style={{ marginBottom: 180, marginStart: 5, marginTop: 5, marginEnd: 5 }}>
-                            {this.renderProfilePicture()}
-                            <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
-                            <Text style={profilePageStyles.helperTextView}>description</Text>
-                            {this.renderDescription()}
+                <View style={{ marginBottom: 180 }}>
+                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
+                        {this.renderPencilIcon()}
+                        {this.renderProfilePicture()}
+                        <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
+                        <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
+                        {this.renderDescription()}
+                    </LinearGradient>
 
-                            {/* <Text style={profilePageStyles.helperTextView}>new</Text>
+                    {/* <Text style={profilePageStyles.helperTextView}>new</Text>
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
                             {this.renderNewPics()}
                         </ScrollView>
@@ -93,9 +123,7 @@ class ProfilePage extends Component {
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
                             {this.renderPublicPics()}
                         </ScrollView> */}
-                        </View>
-                    ) : null
-                }
+                </View>
             </View>
         )
     }
@@ -118,7 +146,6 @@ class Profile extends Component {
     };
 
     async componentDidMount() {
-        // console.log(this.props.userData);
 
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
@@ -140,7 +167,7 @@ class Profile extends Component {
                     this.state.fontLoaded ? (
                         <View style={profilePageStyles.profileView}>
                             <ScrollView style={profilePageStyles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
-                                <ProfilePage user={this.state.userdata} />
+                                <ProfilePage user={this.state.userdata} navMod={this.props.navigationModule} />
                                 {/* <Text>{this.state.userdata.firstName}</Text> */}
                             </ScrollView>
                         </View>
