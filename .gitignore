@@ -106,3 +106,4 @@ dist
 package.json
 
 .expo/packager-info.json
+.expo/settings.json
