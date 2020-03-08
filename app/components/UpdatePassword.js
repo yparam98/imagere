@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, Image, InteractionManager, Alert, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, View, ScrollView, Image, InteractionManager, Alert, TouchableOpacity, ToastAndroid, SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
@@ -23,11 +23,7 @@ class UpdatePassword extends Component {
     }
 
     async componentDidMount() {
-        await Font.loadAsync({
-            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
-            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
-        });
+
     }
 
     savePassword() {
@@ -74,6 +70,7 @@ class UpdatePassword extends Component {
 
     render() {
         return (
+            <SafeAreaView style={{flex: 1}}>
             <View style={settingsPageStyles.settingOptionContainer}>
                 <Text style={settingsPageStyles.headingStyle}>Update Password</Text>
                 <TextInput id={"currentPasswordEntry"} style={
@@ -91,6 +88,7 @@ class UpdatePassword extends Component {
                     <Text style={{ color: "white", fontSize: 20 }}>Save Password</Text>
                 </TouchableOpacity>
             </View>
+            </SafeAreaView>
         )
     }
 }

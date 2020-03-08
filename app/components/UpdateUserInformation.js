@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, Image, InteractionManager, Alert, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, View, ScrollView, Image, InteractionManager, Alert, TouchableOpacity, ToastAndroid, SafeAreaView } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
 import axios from 'axios';
@@ -22,20 +22,16 @@ class UpdateUserInformation extends Component {
     }
 
     async componentDidMount() {
-        await Font.loadAsync({
-            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
-            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
-        });
+
     }
 
     saveInfo() {
         this.setState({
-            firstNameValid: this.state.firstName == "",
-            lastNameValid: this.state.lastName == "",
+            firstNameValid: this.state.firstName == "" || this.state.firstName.trim() == "",
+            lastNameValid: this.state.lastName == "" || this.state.lastName.trim() == ""
         });
 
-        if(this.state.firstName != "" && this.state.lastName != ""){
+        if(!this.state.firstNameValid && !this.state.lastNameValid){
             axios.post(this.state.dataURL + "/update/user", {
                 "newFirstName": this.state.firstName,
                 "newLastName": this.state.lastName,
@@ -51,6 +47,7 @@ class UpdateUserInformation extends Component {
 
     render() {
         return (
+            <SafeAreaView style={{flex: 1}}>
             <ScrollView style={settingsPageStyles.settingOptionContainer}>
                 <Text style={settingsPageStyles.headingStyle}>Update User Information</Text>
                 <Text style={settingsPageStyles.label}>First Name</Text>              
@@ -69,6 +66,7 @@ class UpdateUserInformation extends Component {
                     <Text style={{ color: "white", fontSize: 20 }}>Save Info</Text>
                 </TouchableOpacity>
             </ScrollView>
+            </SafeAreaView>
         )
     }
 }

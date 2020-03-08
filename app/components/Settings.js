@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { ListItem } from 'react-native-elements';
-import { View, StyleSheet, Text, TouchableOpacity, Image  } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, SafeAreaView  } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
@@ -68,7 +68,7 @@ class Settings extends Component {
                 this.props.navigation.navigate('About');
                 break;   
             case 'Contact Us':
-                this.props.navigation.navigate('ContactUs');
+                this.props.navigation.navigate('ContactUs', { user: this.props.navigation.state.params.user });
                 break;                             
         }
     }
@@ -105,6 +105,7 @@ class Settings extends Component {
 
     render() {
         return (
+        <SafeAreaView style={{flex: 1}}>
         <View style={{flexDirection: 'column', paddingTop: 20, paddingBottom: 20}}>
                 <TouchableOpacity style={{ alignSelf: "flex-start" }} onPress={() => this.props.navigation.pop()}>
                 <Image source={require("../assets/icons/ios_back_arrow.png")} style={settingsPageStyles.backIcon} />
@@ -117,6 +118,7 @@ class Settings extends Component {
                 renderItem={this.renderItem}
             />
         </View>
+        </SafeAreaView>
         );
     }
 }
