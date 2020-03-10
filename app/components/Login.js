@@ -8,6 +8,7 @@ import _ from 'lodash';
 import axios from 'axios';
 import loginPageStyles from '../assets/css/loginPage_styles';
 import sharedStyles from '../assets/css/shared_styles';
+import UtilityButton from './Button';
 
 class Login extends Component {
     constructor(props) {
@@ -122,7 +123,9 @@ class Login extends Component {
                                 } placeholder={'password'} textContentType={'password'} secureTextEntry={true} onChangeText={(text) => this.setState({ password: text })} maxLength={25} />
 
                                 <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.onLogin(navigate)}>
+                                    <UtilityButton title={"login"} color={"purple"}/>
+                                    <UtilityButton title={"forgot password?"} color={"orange"}/>
+                                    {/* <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.onLogin(navigate)}>
                                         <View style={loginPageStyles.successButton}>
                                             <Text style={loginPageStyles.buttonText}>login</Text>
                                         </View>
@@ -131,7 +134,7 @@ class Login extends Component {
                                         <View style={loginPageStyles.helpButton}>
                                             <Text style={loginPageStyles.buttonText}>forgot password?</Text>
                                         </View>
-                                    </TouchableHighlight>
+                                    </TouchableHighlight> */}
                                 </View>
                             </View>
                         ) : null
