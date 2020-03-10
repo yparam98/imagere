@@ -276,6 +276,7 @@ class SignUp extends Component {
                                         {this.renderFourthSlide()}
                                     </View>
                                 </ViewPager>
+                                <Text style={{fontFamily: "Quicksand", fontSize: 8, color: "white", alignSelf: "center"}}>(slide to go to next page) →</Text>
                             </View>
                         ) : null
                     }

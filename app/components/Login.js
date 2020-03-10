@@ -122,19 +122,9 @@ class Login extends Component {
                                     _.merge({}, loginPageStyles.inputField, this.state.passwordInvalid && loginPageStyles.inputFieldError)
                                 } placeholder={'password'} textContentType={'password'} secureTextEntry={true} onChangeText={(text) => this.setState({ password: text })} maxLength={25} />
 
-                                <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-                                    <UtilityButton title={"login"} color={"purple"} onPress={() => this.onLogin(navigate)} />
-                                    <UtilityButton title={"forgot password?"} color={"orange"} onPress={() => this.forgot_password_press()} />
-                                    {/* <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.onLogin(navigate)}>
-                                        <View style={loginPageStyles.successButton}>
-                                            <Text style={loginPageStyles.buttonText}>login</Text>
-                                        </View>
-                                    </TouchableHighlight>
-                                    <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.forgot_password_press()}>
-                                        <View style={loginPageStyles.helpButton}>
-                                            <Text style={loginPageStyles.buttonText}>forgot password?</Text>
-                                        </View>
-                                    </TouchableHighlight> */}
+                                <View style={{ flexDirection: 'row', alignSelf: 'flex-end', marginRight: 20 }}>
+                                    <UtilityButton title={"login"} color={"darkorange"} icon={"face"} onPress={() => this.onLogin(navigate)} />
+                                    <UtilityButton title={"forgot password?"} color={"indigo"} icon={"fingerprint"} onPress={() => this.forgot_password_press()} />
                                 </View>
                             </View>
                         ) : null
