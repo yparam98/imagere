@@ -123,8 +123,8 @@ class Login extends Component {
                                 } placeholder={'password'} textContentType={'password'} secureTextEntry={true} onChangeText={(text) => this.setState({ password: text })} maxLength={25} />
 
                                 <View style={{ flexDirection: 'row', alignSelf: 'flex-end' }}>
-                                    <UtilityButton title={"login"} color={"purple"}/>
-                                    <UtilityButton title={"forgot password?"} color={"orange"}/>
+                                    <UtilityButton title={"login"} color={"purple"} onPress={() => this.onLogin(navigate)} />
+                                    <UtilityButton title={"forgot password?"} color={"orange"} onPress={() => this.forgot_password_press()} />
                                     {/* <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' style={loginPageStyles.buttonPress} onPress={() => this.onLogin(navigate)}>
                                         <View style={loginPageStyles.successButton}>
                                             <Text style={loginPageStyles.buttonText}>login</Text>

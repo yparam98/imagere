@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { Text } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 
 class UtilityButton extends Component {
     constructor(props) {
@@ -16,7 +15,9 @@ class UtilityButton extends Component {
     render() {
         return (
             <TouchableOpacity style={{ borderWidth: 1, borderColor: this.state.color, borderRadius: 10, margin: 5 }} onPress={this.state.pressAction}>
-                <Text style={{ fontFamily: "Quicksand", fontSize: 16, color: this.state.color, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10 }}>{this.state.buttonTitle}</Text>
+                <Text style={{ fontFamily: "Quicksand", fontSize: 16, color: this.state.color, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10 }}>
+                    {this.state.buttonTitle}
+                </Text>
             </TouchableOpacity>
         )
     }
