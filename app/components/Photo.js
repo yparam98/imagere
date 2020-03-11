@@ -49,7 +49,7 @@ class Photo extends Component {
 					!this.state.submitted ? (
 						<View>
 							<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, alignSelf: "center", margin: 10 }} resizeMode="contain" />
-							<View style={{ alignSelf: "center" }}>
+							<View style={{alignItems: "center"}}>
 								<UtilityButton title={"Upload Photo"} icon={"cloud-upload"} color={"black"} onPress={() => this.onUpload()} />
 							</View>
 						</View>

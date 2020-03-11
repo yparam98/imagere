@@ -7,7 +7,8 @@ import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Icon } from 'react-native-elements';;
+import { Icon } from 'react-native-elements';import UtilityButton from './Button';
+;
 
 class ProfilePage extends Component {
     constructor(props) {
@@ -95,6 +96,9 @@ class ProfilePage extends Component {
     renderPencilIcon() {
         return (
             <Icon name="settings" type="material" reverse raised containerStyle={{ alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()} />
+            // <View style={{ alignItems: "flex-end" }}>
+            //     <UtilityButton title={"Settings"} icon={"settings"} color={"darkgreen"} onPress={() => this.on_settings_press()} />
+            // </View>
         )
     }
 
