@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { FlatList, View, TouchableHighlight, Text, Image } from "react-native";
+import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler } from "react-native";
+import { Image } from 'react-native-elements';
 import newsfeedPageStyles from "../assets/css/newsfeedPage_styles";
 import axios from "axios";
 import moment from "moment";
 import { Buffer } from "buffer";
+import AsyncImage from "./ImageRenderer";
 
 class NewsfeedRenderer extends Component {
     constructor(props) {
@@ -17,42 +19,8 @@ class NewsfeedRenderer extends Component {
         return <Text style={newsfeedPageStyles.dateText}>{moment(incomingDate).fromNow()}</Text>
     }
 
-    async getSpeciesPicture(incomingPictureURL) {
-        let speciesPicture = "";
-
-        try {
-            let imageSrc = await axios.post("http://myvmlab.senecacollege.ca:6746" + "/retrieveFile", { "incomingURL": incomingProfilePicURL }, { responseType: 'arraybuffer' });
-            speciesPicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64');
-        } catch (error) {
-            speciesPicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg";
-        }
-
-        return <Image source={{ uri: speciesPicture }} style={newsfeedPageStyles.speciesImage} />
-    }
-
     getIdentification(incomingIdentification) {
         return <Text style={{ fontFamily: "Quicksand-Bold" }}>{incomingIdentification}</Text>
-    }
-
-    async getUserProfilePic(incomingProfilePicURL) {
-        // let profilePicture = "";
-
-        // if (!incomingProfilePicURL.profilePicture || incomingProfilePicURL.profilePicture == null) {
-        //     profilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg";
-        // }
-        // else {
-        //     console.log(incomingProfilePicURL.profilePicture);
-        //     try {
-        //         let imageSrc = await axios.post("http://myvmlab.senecacollege.ca:6746" + "/retrieveFile", { "incomingURL": incomingProfilePicURL.profilePicture }, { responseType: 'arraybuffer' });
-        //         profilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64');
-        //     } catch (error) {
-        //         profilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg";
-        //     }
-        // }
-
-        // console.log("profilePicture uri: " + profilePicture);
-
-        return <Image source={{ uri: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg" }} style={newsfeedPageStyles.userImage} />
     }
 
     getUsername(incomingUserName) {
@@ -80,18 +48,18 @@ class NewsfeedRenderer extends Component {
 
     render() {
         return (
-            <FlatList data={this.state.myData} renderItem={({ item }) =>
+            <FlatList data={this.state.myData.slice(0,5)} renderItem={({ item }) =>
                 <View style={newsfeedPageStyles.newsfeedCardView}>
                     <View style={newsfeedPageStyles.userTagDateContainer}>
-                        <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' onPress={() => this.onUserNamePress(item)}>
+                        <TouchableHighlight underlayColor='rgba(0,0,0,0.0)'>
                             <View style={newsfeedPageStyles.userTag}>
-                                {this.getUserProfilePic(item.metadata.photographer)}
+                                <AsyncImage incomingPictureURL={item.metadata.photographer.profilePicture} incomingStyleObj={newsfeedPageStyles.userImage} />
                                 {this.getUsername(item.metadata.photographer)}
                             </View>
                         </TouchableHighlight>
                         {this.getLocation(item.metadata.locationTaken)}
                     </View>
-                    {/* {this.getSpeciesPicture(item.photoURL)} */}
+                    <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />
                     <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(item.categorization.nnResult[0].label)}</Text>
                     {this.getPostDate(item.metadata.dateTaken)}
                 </View>
