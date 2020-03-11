@@ -15,13 +15,13 @@ class NewsfeedPane extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://lonetech.ca/api/prj666')
-            .then((response) => {
-                this.setState({ myData: response.data });
-            })
-            .catch(() => {
-                console.log("error retrieving data from API!")
-            });
+        // axios.get('https://lonetech.ca/api/prj666')
+        //     .then((response) => {
+        //         this.setState({ myData: response.data });
+        //     })
+        //     .catch(() => {
+        //         console.log("error retrieving data from API!")
+        //     });
     }
 
     getPostDate(incomingDate) {
