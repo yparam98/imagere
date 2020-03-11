@@ -11,10 +11,6 @@ class AsyncImage extends Component {
         };
     }
 
-    componentDidMount() {
-        console.log(this.state.pictureURL);
-    }
-
     render() {
         return (
             <View>
