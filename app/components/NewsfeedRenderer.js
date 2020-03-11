@@ -1,11 +1,13 @@
 import React, { Component } from "react";
-import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler } from "react-native";
-import { Image } from 'react-native-elements';
+import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler, TouchableOpacity } from "react-native";
+import { Image, Overlay } from 'react-native-elements';
 import newsfeedPageStyles from "../assets/css/newsfeedPage_styles";
 import axios from "axios";
 import moment from "moment";
 import { Buffer } from "buffer";
 import AsyncImage from "./ImageRenderer";
+import ProfileSampler from "./ProfileSampler";
+import profilePageStyles from "../assets/css/profilePage_styles";
 
 class NewsfeedRenderer extends Component {
     constructor(props) {
@@ -43,20 +45,25 @@ class NewsfeedRenderer extends Component {
     }
 
     onUserNamePress(incomingItem) {
+
+        // <Overlay isVisible={visibleAttr} windowBackgroundColor="rgba(255, 255, 255, .5)" onBackdropPress={visibleAttr = false}>
+        //     <Text>Hello from overlay!</Text>
+        //     {/* <ProfileSampler myUser={incomingItem}/> */}
+        // </Overlay>
         this.props.navigation.navigate('ProfileSampler', { myUser: incomingItem, navigation: this.props.navigation });
     }
 
     render() {
         return (
-            <FlatList data={this.state.myData.slice(0,5)} renderItem={({ item }) =>
+            <FlatList data={this.state.myData} initialNumToRender={5} renderItem={({ item }) =>
                 <View style={newsfeedPageStyles.newsfeedCardView}>
                     <View style={newsfeedPageStyles.userTagDateContainer}>
-                        <TouchableHighlight underlayColor='rgba(0,0,0,0.0)'>
+                        <TouchableOpacity onPress={() => this.onUserNamePress(item.metadata.photographer)}>
                             <View style={newsfeedPageStyles.userTag}>
                                 <AsyncImage incomingPictureURL={item.metadata.photographer.profilePicture} incomingStyleObj={newsfeedPageStyles.userImage} />
                                 {this.getUsername(item.metadata.photographer)}
                             </View>
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                         {this.getLocation(item.metadata.locationTaken)}
                     </View>
                     <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />

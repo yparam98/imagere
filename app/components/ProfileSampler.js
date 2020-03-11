@@ -7,6 +7,7 @@ import * as Font from 'expo-font';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
+import AsyncImage from './ImageRenderer';
 
 class ProfileSampler extends Component {
     constructor(props) { 
@@ -48,30 +49,6 @@ class ProfileSampler extends Component {
 
     }
 
-    renderNewPics() {
-        return this.state.myUser.newPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPrivatePics() {
-        return this.state.myUser.privatePhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPublicPics() {
-        return this.state.myUser.publicPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
     renderDescription() {
         return (
             <View style={{ borderColor: "white", borderWidth: 0.75, margin: 15, borderRadius: 90, width: "90%", alignSelf: "center" }}>
@@ -101,12 +78,13 @@ class ProfileSampler extends Component {
                 <View style={{ flex: 1, flexDirection: "column" }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
                         {/* {this.renderBackIcon()} */}
-                        <Image source={{ uri: this.state.myUser.userPicURL }} style={profilePageStyles.userImage} />
-                        <Text style={profilePageStyles.userName}>{this.state.myUser.userName}</Text>
+                        {/* <Image source={{ uri: this.state.myUser.userPicURL }} style={profilePageStyles.userImage} /> */}
+                        <AsyncImage incomingPictureURL={this.state.myUser.profilePicture} incomingStyleObj={profilePageStyles.userImage} />
+                        <Text style={profilePageStyles.userName}>{this.state.myUser.firstName + " " + this.state.myUser.lastName}</Text>
                         <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
                         {this.renderDescription()}
                     </LinearGradient>
-                    <ScrollView style={{ alignContent: "center" }} showsVerticalScrollIndicator={false}>
+                    {/* <ScrollView style={{ alignContent: "center" }} showsVerticalScrollIndicator={false}>
                         <Text style={profilePageStyles.helperTextView}>new</Text>
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
                             {this.renderNewPics()}
@@ -119,7 +97,7 @@ class ProfileSampler extends Component {
                         <ScrollView nestedScrollEnabled={true} horizontal={true}>
                             {this.renderPublicPics()}
                         </ScrollView>
-                    </ScrollView>
+                    </ScrollView> */}
 
                     {/* <Button title="Close" onPress={() => this.toggleModal()} /> */}
 

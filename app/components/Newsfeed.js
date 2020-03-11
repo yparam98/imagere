@@ -50,7 +50,7 @@ class NewsfeedPane extends PureComponent {
                 {
                     !this.state.dataLoaded ? (
                         <View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
-                    ) : <NewsfeedRenderer newsfeedData={this.state.myData} />
+                    ) : <NewsfeedRenderer newsfeedData={this.state.myData} navigation={this.props.navigation}/>
                 }
             </View>
         )

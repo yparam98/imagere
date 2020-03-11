@@ -43,7 +43,7 @@ class AsyncImage extends Component {
                 {
                     !this.state.imageLoaded ? (
                         <ActivityIndicator size={"small"} color={"darkgrey"} style={{ padding: 2 }} />
-                    ) : <Image source={{ uri: this.state.pictureOBJ }} style={this.state.styleObj} containerStyle={this.state.styleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"white"} style={{ padding: 2 }} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.35)" }} />
+                    ) : <Image source={{ uri: this.state.pictureOBJ }} style={this.state.styleObj} containerStyle={this.state.styleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"white"} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} />
                 }
             </View>
         )

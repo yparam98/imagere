@@ -44,7 +44,8 @@ const profilePageStyles = StyleSheet.create({
         height: 651 / 5,
         borderRadius: 90,
         margin: 10,
-        alignSelf: "center"
+        alignSelf: "center",
+        overflow: "hidden"
     },
     helperTextView: {
         fontFamily: "Quicksand",
