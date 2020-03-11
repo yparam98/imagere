@@ -110,7 +110,7 @@ class ProfilePage extends Component {
             <View>
                 <View style={{ marginBottom: 180 }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
-                        {/* {this.renderPencilIcon()} */}
+                        {this.renderPencilIcon()}
                         {
                             this.state.myUser.profilePicture ? (
                                 <Avatar rounded source={{ uri: this.state.dataURL + this.state.myUser.profilePicture }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
