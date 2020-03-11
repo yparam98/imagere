@@ -2,8 +2,8 @@
   "expoServerPort": 19000,
   "expoServerNgrokUrl": "https://6b-2zu.yparameshwaran.mobile-app.exp.direct",
   "packagerNgrokUrl": "https://packager.6b-2zu.yparameshwaran.mobile-app.exp.direct",
-  "ngrokPid": 95820,
+  "ngrokPid": 146601,
   "devToolsPort": 19002,
-  "packagerPort": 19003,
-  "packagerPid": 95663
+  "packagerPort": 19004,
+  "packagerPid": 146363
 }
