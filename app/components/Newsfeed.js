@@ -10,7 +10,21 @@ class NewsfeedPane extends Component {
         super(props);
         this.state = {
             myData: [],
-            myNav: this.props.navigation
+            myNav: this.props.navigation,
+            pictureID: "",
+            picturePath: "",
+            metadata: {
+                id: "",
+                dateTaken: "",
+                locationTaken: "",
+                photographer: {
+                    id: "",
+                    firstName: "",
+                    lastName: "",
+                    description: "",
+                    profilePicture: ""
+                },
+            },
         };
     }
 
