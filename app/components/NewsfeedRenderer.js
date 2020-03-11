@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler, TouchableOpacity } from "react-native";
-import { Image, Overlay } from 'react-native-elements';
+import { Image, Overlay, Avatar } from 'react-native-elements';
 import newsfeedPageStyles from "../assets/css/newsfeedPage_styles";
 import axios from "axios";
 import moment from "moment";
@@ -60,7 +60,11 @@ class NewsfeedRenderer extends Component {
                     <View style={newsfeedPageStyles.userTagDateContainer}>
                         <TouchableOpacity onPress={() => this.onUserNamePress(item.metadata.photographer)}>
                             <View style={newsfeedPageStyles.userTag}>
-                                <AsyncImage incomingPictureURL={item.metadata.photographer.profilePicture} incomingStyleObj={newsfeedPageStyles.userImage} />
+                                {
+                                    item.metadata.photographer.profilePicture ? (
+                                        <Avatar rounded source={{ uri: "http://myvmlab.senecacollege.ca:6746/retrieveFile?incomingURL=/" + item.metadata.photographer.profilePicture }} size="small" activeOpacity={1.0} avatarStyle={newsfeedPageStyles.userImage} containerStyle={newsfeedPageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                                    ) : <Avatar rounded title={item.metadata.photographer.firstName.charAt(0) + item.metadata.photographer.lastName.charAt(0)} size="small" activeOpacity={0.7} avatarStyle={newsfeedPageStyles.userImage} containerStyle={newsfeedPageStyles.userImage} />
+                                }
                                 {this.getUsername(item.metadata.photographer)}
                             </View>
                         </TouchableOpacity>
