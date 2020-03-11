@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, TouchableHighlight, FlatList } from 'react-native';
+import { Text, View, Image, TouchableHighlight, FlatList, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import axios from 'axios';
 import moment from 'moment';
@@ -9,88 +9,75 @@ class NewsfeedPane extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            dataLoaded: false,
+            newsfeedDataObj: undefined,
             myData: [],
             myNav: this.props.navigation,
-            pictureID: "",
-            picturePath: "",
-            metadata: {
-                id: "",
-                dateTaken: "",
-                locationTaken: "",
-                photographer: {
-                    id: "",
-                    firstName: "",
-                    lastName: "",
-                    description: "",
-                    profilePicture: ""
-                },
-            },
+            // pictureID: "",
+            // picturePath: "",
+            // metadata: {
+            //     id: "",
+            //     dateTaken: "",
+            //     locationTaken: "",
+            //     photographer: {
+            //         id: "",
+            //         firstName: "",
+            //         lastName: "",
+            //         description: "",
+            //         profilePicture: ""
+            //     },
+            // },
         };
     }
 
-    componentDidMount() {
-        // axios.get('https://lonetech.ca/api/prj666')
+    async componentDidMount() {
+        // await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
         //     .then((response) => {
-        //         this.setState({ myData: response.data });
+        //         // console.log(response.data);
+        //         for (let pictureObj of response.data) {
+        //             if (pictureObj != undefined && pictureObj.metadata != undefined && pictureObj.categorization != undefined) {
+        //                 console.log(pictureObj.categorization.nnResult[0].label);
+        //                 this.state.myData.push(pictureObj);
+        //             }
+        //         }
         //     })
-        //     .catch(() => {
-        //         console.log("error retrieving data from API!")
+        //     .catch((err) => {
+        //         console.log("error retrieving data from API: " + err);
         //     });
     }
 
-    getPostDate(incomingDate) {
-        return <Text style={newsfeedPageStyles.dateText}>{moment.unix(incomingDate).fromNow()}</Text>
+    async initializeData() {
+        await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
+            .then((response) => {
+                // console.log(response.data);
+                for (let pictureObj of response.data) {
+                    if (pictureObj != undefined && pictureObj.metadata != undefined && pictureObj.categorization != undefined) {
+                        this.state.myData.push(pictureObj);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log("error retrieving data from API: " + err);
+            });
     }
 
-    getSpeciesPicture(incomingPictureURL) {
-        return <Image source={{ uri: incomingPictureURL }} style={newsfeedPageStyles.speciesImage} />
-    }
-
-    getIdentification(incomingIdentification) {
-        return <Text style={{ fontFamily: "Quicksand-Bold" }}>{incomingIdentification}</Text>
-    }
-
-    getUserProfilePic(incomingProfilePicURL) {
-        return <Image source={{ uri: incomingProfilePicURL }} style={newsfeedPageStyles.userImage} />
-    }
-
-    getUsername(incomingUserName, incomingItem) {
-        return <Text style={newsfeedPageStyles.userName}>{incomingUserName}</Text>
-    }
-
-    getLocation(incomingLocation) {
-        return <Text style={newsfeedPageStyles.locationText}>{incomingLocation}</Text>
-    }
-
-    onUserNamePress(incomingItem) {
-        this.props.navigation.navigate('ProfileSampler', { myUser: incomingItem, navigation: this.props.navigation });
-    }
-
-    renderNewsfeed() {
-        return (
-            <FlatList data={this.state.myData} renderItem={({ item }) =>
-                <View style={newsfeedPageStyles.newsfeedCardView}>
-                    <View style={newsfeedPageStyles.userTagDateContainer}>
-                        <TouchableHighlight underlayColor='rgba(0,0,0,0.0)' onPress={() => this.onUserNamePress(item)}>
-                            <View style={newsfeedPageStyles.userTag}>
-                                {this.getUserProfilePic(item.userPicURL)}
-                                {this.getUsername(item.userName, item)}
-                            </View>
-                        </TouchableHighlight>
-                        {this.getLocation(item.locationTaken)}
-                    </View>
-                    {this.getSpeciesPicture(item.photoURL)}
-                    <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(item.identification)}</Text>
-                    {this.getPostDate(item.timestamp)}
-                </View>
-            } keyExtractor={item => item._id} />
-        )
+    async renderNewsfeed() {
+        await this.initializeData().then(() => {
+            this.setState({
+                dataLoaded: true
+            });
+        });
     }
 
     render() {
+        this.renderNewsfeed();
         return (
             <View>
-                {this.renderNewsfeed()}
+                {
+                    !this.state.dataLoaded ? (
+                        <View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
+                    ) : 
+                }
             </View>
         )
     }
@@ -129,10 +116,6 @@ class Newsfeed extends Component {
                 {
                     this.state.fontLoaded ? (
                         <NewsfeedPane navigation={this.props.navigation} />
-                        // <FlatList style={newsfeedPageStyles.scrollingNewsPane} showsVerticalScrollIndicator={false}>
-                        //     <NewsfeedPane navigation={this.props.navigation} />
-                        //     {/* <Text>{JSON.stringify(this.state.currentUser)}</Text> */}
-                        // </FlatList>
                     ) : null
                 }
             </View>
@@ -141,3 +124,78 @@ class Newsfeed extends Component {
 }
 
 export default Newsfeed;
+
+/*
+
+  {
+        "_id": "5e587ae4af5cbe617197cab0",
+        "pathToPicture": "images/speciesPictures/e5d98ed3c599293e6533d1d597e973221f46aed544601219695c6c80c75c7ccb.jpg",
+        "approval": false,
+        "metadata": null,
+        "__v": 0
+    },
+    {
+        "_id": "5e5c63a4ea3d4c91a231a811",
+        "pathToPicture": "images/speciesPictures/913a7a4e5136a9bf3d07e43b4e219a178236790acd4d228b99691759c1d7a721.jpg",
+        "approval": false,
+        "metadata": {
+            "public": false,
+            "_id": "5e5c63a4ea3d4c91a231a810",
+            "dateTaken": "2020-03-02T01:38:44.356Z",
+            "locationTaken": "Toronto",
+            "photographer": {
+                "accountVerified": false,
+                "passwordResetToken": "JLAPHICJPNOFJEMC",
+                "_id": "5e2e75cc06b77c26821a813d",
+                "firstName": "Sukhbeer",
+                "lastName": "Dhillon",
+                "emailAddress": "ssdhillon20@myseneca.ca",
+                "securityQuestions": [
+                    {
+                        "_id": "5e2e75cc06b77c26821a813e",
+                        "question": "Where am I?"
+                    }
+                ],
+                "__v": 0,
+                "description": "Student Developer",
+                "profilePicture": "images/profilePictures/35f5fd1a4661b49c87ce76fad088bfbeec973ee90f90f06ba843adcec34b1249.jpg",
+                "tokenExpiryDate": "2020-03-11T21:29:00.000Z"
+            },
+            "__v": 0
+        },
+        "__v": 0,
+        "categorization": {
+            "_id": "5e5c63bfea3d4c91a231a812",
+            "nnResult": [
+                {
+                    "_id": "5e5c63bfea3d4c91a231a817",
+                    "label": "Shih-Tzu",
+                    "percentile": 79.4
+                },
+                {
+                    "_id": "5e5c63bfea3d4c91a231a816",
+                    "label": "Lhasa",
+                    "percentile": 2.4
+                },
+                {
+                    "_id": "5e5c63bfea3d4c91a231a815",
+                    "label": "affenpinscher",
+                    "percentile": 1.6
+                },
+                {
+                    "_id": "5e5c63bfea3d4c91a231a814",
+                    "label": "Pekinese",
+                    "percentile": 1
+                },
+                {
+                    "_id": "5e5c63bfea3d4c91a231a813",
+                    "label": "Tibetan_terrier",
+                    "percentile": 0.7
+                }
+            ],
+            "picture": "5e5c63a4ea3d4c91a231a811",
+            "__v": 0
+        }
+    }
+
+*/
