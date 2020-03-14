@@ -22,7 +22,18 @@ class NewsfeedRenderer extends Component {
     }
 
     getIdentification(incomingIdentification) {
-        return <Text style={{ fontFamily: "Quicksand-Bold" }}>{incomingIdentification}</Text>
+        let identification = incomingIdentification;
+
+        if (incomingIdentification.search('_') != -1)
+        {
+            identification = incomingIdentification.replace('_', ' ');
+        }
+        
+        let capitalizedFirstLetter = identification.charAt(0).toUpperCase();
+        identification = capitalizedFirstLetter.concat(identification.slice(1,identification.length));
+
+
+        return <Text style={{ fontFamily: "Quicksand-Bold" }}>{identification}</Text>
     }
 
     getUsername(incomingUserName) {
