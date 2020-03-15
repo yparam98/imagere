@@ -71,7 +71,8 @@ const newsfeedPageStyles = StyleSheet.create({
         height: "100%",
         aspectRatio: 1,
         borderRadius: 90,
-        margin: 0
+        margin: 0,
+        overflow: "hidden"
     },
     speciesImage: {
         aspectRatio: 1.5,
