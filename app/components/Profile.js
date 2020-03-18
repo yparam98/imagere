@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl } from 'react-native';
+import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import _ from 'lodash';
@@ -7,13 +7,14 @@ import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Icon } from 'react-native-elements';;
+import UtilityButton from './Button';
+import { Icon, Avatar } from 'react-native-elements';;
 
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataURL: "http://myvmlab.senecacollege.ca:6746",
+            dataURL: "http://myvmlab.senecacollege.ca:6746/retrieveFile?incomingURL=",
             myUser: this.props.user,
             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
             selector: parseInt(Math.random() * 10),
@@ -32,22 +33,22 @@ class ProfilePage extends Component {
         };
     }
 
-    async componentDidMount() {
-        //console.log("Test ProfilePage");
-        //console.log(this.props.user);
+    // async componentDidMount() {
+    //     //console.log("Test ProfilePage");
+    //     //console.log(this.props.user);
 
-        try {
-            let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+    //     try {
+    //         let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
 
-            this.setState({
-                myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-            });
-        } catch (error) {
-            this.setState({
-                myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
-            });
-        }
-    }
+    //         this.setState({
+    //             myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
+    //         });
+    //     } catch (error) {
+    //         this.setState({
+    //             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
+    //         });
+    //     }
+    // }
 
     on_settings_press() {
         // console.log(this.props);
@@ -57,7 +58,9 @@ class ProfilePage extends Component {
     }
 
     renderProfilePicture() {
-        return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
+        // return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
+        <Avatar rounded title="YP" size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
+
     }
 
     renderNewPics() {
@@ -95,6 +98,9 @@ class ProfilePage extends Component {
     renderPencilIcon() {
         return (
             <Icon name="settings" type="material" reverse raised containerStyle={{ alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()} />
+            // <View style={{ alignItems: "flex-end" }}>
+            //     <UtilityButton title={"Settings"} icon={"settings"} color={"darkgreen"} onPress={() => this.on_settings_press()} />
+            // </View>
         )
     }
 
@@ -105,7 +111,11 @@ class ProfilePage extends Component {
                 <View style={{ marginBottom: 180 }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
                         {this.renderPencilIcon()}
-                        {this.renderProfilePicture()}
+                        {
+                            this.state.myUser.profilePicture ? (
+                                <Avatar rounded source={{ uri: this.state.dataURL + this.state.myUser.profilePicture }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                            ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
+                        }
                         <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
                         <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
                         {this.renderDescription()}
