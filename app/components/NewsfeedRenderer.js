@@ -73,7 +73,7 @@ class NewsfeedRenderer extends Component {
                             <View style={newsfeedPageStyles.userTag}>
                                 {
                                     item.metadata.photographer.profilePicture ? (
-                                        <Avatar rounded source={{ uri: "http://myvmlab.senecacollege.ca:6746/retrieveFile?incomingURL=/" + item.metadata.photographer.profilePicture }} size="small" activeOpacity={1.0} avatarStyle={newsfeedPageStyles.userImage} containerStyle={newsfeedPageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                                        <Avatar rounded source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.metadata.photographer.profilePicture)[1] }} size="small" activeOpacity={1.0} avatarStyle={newsfeedPageStyles.userImage} containerStyle={newsfeedPageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
                                     ) : <Avatar rounded title={item.metadata.photographer.firstName.charAt(0) + item.metadata.photographer.lastName.charAt(0)} size="small" activeOpacity={0.7} avatarStyle={newsfeedPageStyles.userImage} containerStyle={newsfeedPageStyles.userImage} />
                                 }
                                 {this.getUsername(item.metadata.photographer)}

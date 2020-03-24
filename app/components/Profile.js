@@ -14,7 +14,7 @@ class ProfilePage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataURL: "http://myvmlab.senecacollege.ca:6746/retrieveFile?incomingURL=",
+            dataURL: "http://myvmlab.senecacollege.ca:6746/static/",
             myUser: this.props.user,
             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
             selector: parseInt(Math.random() * 10),
@@ -113,7 +113,7 @@ class ProfilePage extends Component {
                         {this.renderPencilIcon()}
                         {
                             this.state.myUser.profilePicture ? (
-                                <Avatar rounded source={{ uri: this.state.dataURL + this.state.myUser.profilePicture }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                                <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
                             ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
                         }
                         <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
