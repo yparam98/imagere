@@ -55,16 +55,16 @@ class LandingPage extends Component {
                             <View style={landingPageStyles.landingPageContent}>
                                 <Image source={require('../assets/images/logo.png')} style={landingPageStyles.logo} />
                                 <View style={landingPageStyles.buttons}>
-                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={() => this.on_login_press()}>
+                                    <TouchableOpacity style={landingPageStyles.buttonPress} onPress={() => this.on_login_press()}>
                                         <View style={landingPageStyles.loginButton}>
                                             <Text style={landingPageStyles.buttonText}>login</Text>
                                         </View>
-                                    </TouchableHighlight>
-                                    <TouchableHighlight style={landingPageStyles.buttonPress} onPress={() => this.on_signup_press()}>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={landingPageStyles.buttonPress} onPress={() => this.on_signup_press()}>
                                         <View style={landingPageStyles.signupButton}>
                                             <Text style={landingPageStyles.buttonText}>sign up</Text>
                                         </View>
-                                    </TouchableHighlight>
+                                    </TouchableOpacity>
                                 </View>
                             </View>
                         ) : null
