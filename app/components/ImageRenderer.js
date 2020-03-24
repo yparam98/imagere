@@ -5,8 +5,9 @@ import { ActivityIndicator, View } from 'react-native';
 class AsyncImage extends Component {
     constructor(props) {
         super(props);
+        var url = RegExp(/^[a-z]*\/(.*)/).exec(this.props.incomingPictureURL)[1]
         this.state = {
-            pictureURL: "http://myvmlab.senecacollege.ca:6746/retrieveFile?incomingURL=" + this.props.incomingPictureURL,
+            pictureURL: "http://myvmlab.senecacollege.ca:6746/static/" + url,
             styleObj: this.props.incomingStyleObj,
         };
     }

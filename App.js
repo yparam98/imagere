@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView} from 'react-native';
 import LandingPage from './app/components/LandingPage';
 
 export default function App() {
   return (
-    <LandingPage/>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#000000'}}>
+      <LandingPage/>
+    </SafeAreaView>
   );
 }
 
