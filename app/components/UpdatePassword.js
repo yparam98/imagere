@@ -92,7 +92,7 @@ class UpdatePassword extends Component {
                     <Text style={{ color: "white", fontSize: 20 }}>Save Password</Text>
                 </TouchableOpacity> */}
                 <View style={{alignItems: "flex-end", margin: 10}}>
-                    <UtilityButton title={"Save Password"} icon={"save"} color={"black"} onPress={() => this.saveInfo()} />
+                    <UtilityButton title={"Save Password"} icon={"save"} color={"black"} onPress={() => this.savePassword()} />
                 </View>
             </View>
         )
