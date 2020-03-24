@@ -78,10 +78,7 @@ class ProfileSampler extends Component {
         return (
             <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={false} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
                 <View style={{ flex: 1, flexDirection: "column" }}>
-                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
-                        {/* {this.renderBackIcon()} */}
-                        {/* <Image source={{ uri: this.state.myUser.userPicURL }} style={profilePageStyles.userImage} /> */}
-                        {/* <AsyncImage incomingPictureURL={this.state.myUser.profilePicture} incomingStyleObj={profilePageStyles.userImage} /> */}
+                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>                        
                         {
                             this.state.myUser.profilePicture ? (
                                 <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
