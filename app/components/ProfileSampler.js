@@ -91,23 +91,6 @@ class ProfileSampler extends Component {
                         <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
                         {this.renderDescription()}
                     </LinearGradient>
-                    {/* <ScrollView style={{ alignContent: "center" }} showsVerticalScrollIndicator={false}>
-                        <Text style={profilePageStyles.helperTextView}>new</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderNewPics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>private</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPrivatePics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>public</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPublicPics()}
-                        </ScrollView>
-                    </ScrollView> */}
-
-                    {/* <Button title="Close" onPress={() => this.toggleModal()} /> */}
-
                 </View>
             </Modal>
         )
