@@ -1,9 +1,9 @@
 {
   "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://dy-i2i.yparameshwaran.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.dy-i2i.yparameshwaran.mobile-app.exp.direct",
-  "ngrokPid": 313499,
+  "expoServerNgrokUrl": "https://qd-52k.yparameshwaran.mobile-app.exp.direct",
+  "packagerNgrokUrl": "https://packager.qd-52k.yparameshwaran.mobile-app.exp.direct",
+  "ngrokPid": 801133,
   "devToolsPort": 19002,
   "packagerPort": 19001,
-  "packagerPid": 313368
+  "packagerPid": 800961
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ListItem } from 'react-native-elements';
-import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
+import { View, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+// import { FlatList } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
 
@@ -96,10 +96,11 @@ class Settings extends Component {
                     },
                     size: 22,
                 }}
-                containerStyle={{ paddingVertical: 10, marginLeft: 10, marginRight: 10, marginTop: 5, marginBottom: 5, borderRadius: 90, elevation: 2 }}
+                containerStyle={{ paddingVertical: 10, marginLeft: 10, marginRight: 10, marginTop: 5, marginBottom: 5, borderRadius: 90, elevation: 1 }}
                 title={title}
                 titleStyle={{ fontFamily: 'Quicksand' }}
                 onPress={this.on_option_press.bind(this, title)}
+                underlayColor="#ffffff00"
             />
         );
 
