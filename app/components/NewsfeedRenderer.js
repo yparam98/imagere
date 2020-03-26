@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler, TouchableOpacity } from "react-native";
+import React, { PureComponent } from "react";
+import { FlatList, View, TouchableHighlight, Text, ActivityIndicator, BackHandler, TouchableOpacity, ImageBackground } from "react-native";
 import { Image, Overlay, Avatar } from 'react-native-elements';
 import newsfeedPageStyles from "../assets/css/newsfeedPage_styles";
 import axios from "axios";
@@ -9,7 +9,7 @@ import AsyncImage from "./ImageRenderer";
 import ProfileSampler from "./ProfileSampler";
 import profilePageStyles from "../assets/css/profilePage_styles";
 
-class NewsfeedRenderer extends Component {
+class NewsfeedRenderer extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,13 +24,12 @@ class NewsfeedRenderer extends Component {
     getIdentification(incomingIdentification) {
         let identification = incomingIdentification;
 
-        if (incomingIdentification.search('_') != -1)
-        {
+        if (incomingIdentification.search('_') != -1) {
             identification = incomingIdentification.replace('_', ' ');
         }
-        
+
         let capitalizedFirstLetter = identification.charAt(0).toUpperCase();
-        identification = capitalizedFirstLetter.concat(identification.slice(1,identification.length));
+        identification = capitalizedFirstLetter.concat(identification.slice(1, identification.length));
 
 
         return <Text style={{ fontFamily: "Quicksand-Bold" }}>{identification}</Text>
@@ -66,7 +65,7 @@ class NewsfeedRenderer extends Component {
 
     render() {
         return (
-            <FlatList data={this.state.myData} initialNumToRender={5} renderItem={({ item }) =>
+            <FlatList data={this.state.myData} initialNumToRender={5} showsVerticalScrollIndicator={false} renderItem={({ item }) =>
                 <View style={newsfeedPageStyles.newsfeedCardView}>
                     <View style={newsfeedPageStyles.userTagDateContainer}>
                         <TouchableOpacity onPress={() => this.onUserNamePress(item.metadata.photographer)}>
@@ -81,7 +80,9 @@ class NewsfeedRenderer extends Component {
                         </TouchableOpacity>
                         {this.getLocation(item.metadata.locationTaken)}
                     </View>
-                    <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />
+                    <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%" }} blurRadius={30}>
+                        <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />
+                    </ImageBackground>
                     <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(item.categorization.nnResult[0].label)}</Text>
                     {this.getPostDate(item.metadata.dateTaken)}
                 </View>

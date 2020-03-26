@@ -15,7 +15,7 @@ class AsyncImage extends Component {
     render() {
         return (
             <View>
-                <Image source={{ uri: this.state.pictureURL }} style={this.state.styleObj} containerStyle={this.state.styleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"grey"} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} />
+                <Image source={{ uri: this.state.pictureURL }} style={this.state.styleObj} containerStyle={this.state.styleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"grey"} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} resizeMode={"contain"}/>
             </View>
         )
     }

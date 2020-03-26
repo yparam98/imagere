@@ -75,9 +75,9 @@ const newsfeedPageStyles = StyleSheet.create({
         overflow: "hidden"
     },
     speciesImage: {
-        aspectRatio: 1.5,
+        aspectRatio: 1,
         width: "100%",
-        alignSelf: "center"
+        alignSelf: "center",
     },
     identificationText: {
         alignSelf: "flex-end",

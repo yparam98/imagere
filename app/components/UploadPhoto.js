@@ -89,7 +89,7 @@ class UploadPhoto extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1}}>
                 {
                     this.state.fontLoaded ? this.state.specPhoto == "" ? (
                         <View style={uploadPhotoStyles.uploadPictureView}>

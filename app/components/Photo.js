@@ -44,7 +44,7 @@ class Photo extends Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={{ flex: 0 }}>
 				{
 					!this.state.submitted ? (
 						<View>
