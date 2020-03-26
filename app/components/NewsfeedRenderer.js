@@ -80,7 +80,7 @@ class NewsfeedRenderer extends PureComponent {
                         </TouchableOpacity>
                         {this.getLocation(item.metadata.locationTaken)}
                     </View>
-                    <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%" }} blurRadius={30}>
+                    <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%" }} blurRadius={25}>
                         <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />
                     </ImageBackground>
                     <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(item.categorization.nnResult[0].label)}</Text>
