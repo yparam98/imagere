@@ -6,6 +6,7 @@ import _ from 'lodash';
 import * as Font from 'expo-font';
 import axios from 'axios';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
+import UtilityButton from './Button';
 
 class ContactUs extends Component {
     constructor(props) {
@@ -55,10 +56,9 @@ class ContactUs extends Component {
                 <Text style={settingsPageStyles.subHeadingStyle}>We'd love to hear from you.</Text>
                 <TextInput id={"feedbackEntry"} style={_.merge({margin: 20}, settingsPageStyles.textField, this.state.feedbackValid && settingsPageStyles.inputFieldError)}
                 placeholder={'Feedback'} textContentType={'none'} numberOfLines={5} onChangeText={(text) => this.setState({ feedback: text })} maxLength={256} multiline value={this.state.feedback}/>
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.sendFeedback()}>
-                    <Icon name='paper-plane' type='font-awesome' size={30} reverse/>
-                    <Text style={{ color: "white", fontSize: 20 }}>Send Feedback</Text>
-                </TouchableOpacity>
+                <View style={{alignItems: "center", margin: 10}}>
+                    <UtilityButton title={"Send Feedback"} icon={"forum"} color={"black"} onPress={() => this.sendFeedback()} />
+                </View>
             </ScrollView>
             </SafeAreaView>
         )
