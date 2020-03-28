@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, InteractionManager, Alert, TouchableOpacity, ToastAndroid } from 'react-native';
+import { Text, View, Image, Button, InteractionManager, Alert, TouchableOpacity, ToastAndroid, SafeAreaView } from 'react-native';
 import { Icon } from 'react-native-elements';
 import _ from 'lodash';
 import * as Font from 'expo-font';
@@ -16,31 +16,32 @@ class UpdateProfilePicture extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            // photo: "https://avatars3.githubusercontent.com/u/44414281?s=460&v=4",
-            photo: "",
-            profilePictureLoaded: false,
-            myProfilePicture: "https://image.flaticon.com/icons/svg/1077/1077114.svg",
-            myUser: this.props.navigation.state.params.user,
-            dataURL: "http://myvmlab.senecacollege.ca:6746"
+           // photo: "https://avatars3.githubusercontent.com/u/44414281?s=460&v=4",
+           photo: "",
+           profilePictureLoaded: false,
+           myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
+           myUser: this.props.navigation.state.params.user,
+           dataURL: "http://myvmlab.senecacollege.ca:6746"
         }
     }
 
     async componentDidMount() {
         //console.log("test updateProfilePicture:");
         //console.log(this.props);
+        try {
+            let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
 
-        let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
-
-        this.setState({
-            profilePictureLoaded: true,
-            myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-        });
-
-        await Font.loadAsync({
-            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
-            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
-        });
+            this.setState({
+                profilePictureLoaded: true,
+                myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
+            });
+        }
+        catch(error){
+            this.setState({
+                profilePictureLoaded: true,
+                myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
+            });
+        }
 
         await Camera.requestPermissionsAsync();
     }
@@ -97,6 +98,7 @@ class UpdateProfilePicture extends Component {
 
     render() {
         return (
+            <SafeAreaView style={{flex: 1}}>
             <View style={settingsPageStyles.settingOptionContainer}>
                 <Text style={settingsPageStyles.headingStyle}>Update Profile Picture</Text>
                 <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
@@ -118,6 +120,7 @@ class UpdateProfilePicture extends Component {
                     </View>
                 </View>
             </View>
+            </SafeAreaView>
         )
     }
 }

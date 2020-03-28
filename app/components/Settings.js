@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ListItem } from 'react-native-elements';
-import { View, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
-// import { FlatList } from 'react-native-gesture-handler';
+import { View, StyleSheet, Text, TouchableOpacity, Image, SafeAreaView  } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
 
@@ -68,8 +68,8 @@ class Settings extends Component {
                 this.props.navigation.navigate('About');
                 break;
             case 'Contact Us':
-                this.props.navigation.navigate('ContactUs');
-                break;
+                this.props.navigation.navigate('ContactUs', { user: this.props.navigation.state.params.user });
+                break;                             
         }
     }
 
@@ -108,18 +108,20 @@ class Settings extends Component {
 
     render() {
         return (
-            <View style={{ flexDirection: 'column', paddingTop: 20, paddingBottom: 20 }}>
+        <SafeAreaView style={{flex: 1}}>
+        <View style={{flexDirection: 'column', paddingTop: 20, paddingBottom: 20}}>
                 <TouchableOpacity style={{ alignSelf: "flex-start" }} onPress={() => this.props.navigation.pop()}>
-                    <Image source={require("../assets/icons/ios_back_arrow.png")} style={settingsPageStyles.backIcon} />
-                </TouchableOpacity>
-                <Text style={{ fontFamily: 'Quicksand-Medium', fontSize: 34, textAlign: 'center', textAlignVertical: 'center' }}>Settings</Text>
-                <FlatList
-                    keyExtractor={this.keyExtractor}
-                    contentContainerStyle={{ marginTop: 20 }}
-                    data={list}
-                    renderItem={this.renderItem}
-                />
-            </View>
+                <Image source={require("../assets/icons/ios_back_arrow.png")} style={settingsPageStyles.backIcon} />
+            </TouchableOpacity>
+            <Text style={{fontFamily: 'Quicksand-Medium', fontSize: 34, textAlign: 'center', textAlignVertical: 'center'}}>Settings</Text>
+            <FlatList
+                keyExtractor={this.keyExtractor}
+                contentContainerStyle={{ marginTop: 20 }}
+                data={list}
+                renderItem={this.renderItem}
+            />
+        </View>
+        </SafeAreaView>
         );
     }
 }

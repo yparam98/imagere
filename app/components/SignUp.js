@@ -70,6 +70,16 @@ class SignUp extends Component {
             "accountVerified": false
         }).then((response) => {
             if (response.data.user_id) {
+                axios.post(this.state.dataURL + "/email/user/verifyEmail", {
+                    "userEmail": this.state.emailAddr,
+                    "username": this.state.firstName,
+                    "id": response.data.user_id,
+                }).then((response) => {
+                    ToastAndroid.show("Verification Email Sent Successfully!", ToastAndroid.SHORT);
+                }).catch((err) => {
+                    ToastAndroid.show("Verification Email could not be sent!", ToastAndroid.SHORT);
+                });
+
                 let formData = new FormData();
 
                 formData.append("profilePicture", { uri: this.state.photo.uri, name: response.data.user_id + ".jpg", type: "image/jpg" });
