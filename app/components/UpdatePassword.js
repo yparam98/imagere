@@ -6,6 +6,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
+import UtilityButton from './Button';
 
 class UpdatePassword extends Component {
     constructor(props) {
@@ -83,10 +84,13 @@ class UpdatePassword extends Component {
                 _.merge({}, settingsPageStyles.passwordInputField, this.state.newPasswordValid && settingsPageStyles.inputFieldError)
                 } placeholder={'Confirm New Password'} textContentType={'password'} onChangeText={(text) => this.setState({ confirmNewPassword: text })} secureTextEntry={true} maxLength={25} />
                 <Text style={{fontFamily: 'Quicksand', color: '#505050', fontWeight: 'bold', textAlign: 'center', padding: 10}}>{this.state.validationErrors}</Text>
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.savePassword()}>
+                {/* <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.savePassword()}>
                     <Icon name='save' type='font-awesome' size={30} reverse/>
                     <Text style={{ color: "white", fontSize: 20 }}>Save Password</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <View style={{alignItems: "flex-end", margin: 10}}>
+                    <UtilityButton title={"Save Password"} icon={"save"} color={"black"} onPress={() => this.savePassword()} />
+                </View>
             </View>
             </SafeAreaView>
         )

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Image, Text, View, TouchableOpacity, Button, ActivityIndicator } from "react-native";
 import axios from "axios";
 import ResultsView from "./ResultsDisplay";
+import UtilityButton from "./Button";
 
 class Photo extends Component {
 	constructor(props) {
@@ -43,14 +44,14 @@ class Photo extends Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={{ flex: 0 }}>
 				{
 					!this.state.submitted ? (
 						<View>
 							<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, alignSelf: "center", margin: 10 }} resizeMode="contain" />
-							<TouchableOpacity style={{ alignSelf: "center" }} onPress={() => this.onUpload()}>
-								<Text style={{ fontFamily: "Quicksand", fontSize: 34, borderWidth: 1, borderColor: "black", borderRadius: 10, padding: 10, margin: 20 }}>Upload Picture</Text>
-							</TouchableOpacity>
+							<View style={{alignItems: "center"}}>
+								<UtilityButton title={"Upload Photo"} icon={"cloud-upload"} color={"black"} onPress={() => this.onUpload()} />
+							</View>
 						</View>
 					) : <View>
 							{

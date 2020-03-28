@@ -6,6 +6,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import settingsPageStyles from '../assets/css/settingsPage_styles';
+import UtilityButton from './Button';
 
 class UpdateUserInformation extends Component {
     constructor(props) {
@@ -61,10 +62,13 @@ class UpdateUserInformation extends Component {
                 <Text style={settingsPageStyles.label}>Description</Text>
                 <TextInput id={"descriptionEntry"} style={ settingsPageStyles.textField } 
                 placeholder={'Description'} textContentType={'none'} onChangeText={(text) => this.setState({ description: text })} maxLength={256} multiline value={this.state.description}/>
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.saveInfo()}>
+                {/* <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.saveInfo()}>
                     <Icon name='save' type='font-awesome' size={30} reverse/>
                     <Text style={{ color: "white", fontSize: 20 }}>Save Info</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
+                <View style={{alignItems: "flex-end", margin: 10}}>
+                    <UtilityButton title={"Save Info"} icon={"save"} color={"black"} onPress={() => this.saveInfo()} />
+                </View>
             </ScrollView>
             </SafeAreaView>
         )

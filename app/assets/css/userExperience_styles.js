@@ -32,7 +32,7 @@ const userExperienceStyles = StyleSheet.create({
         alignSelf: 'center'
     },
     bottomNavBar: {
-        backgroundColor: 'rgba(0,0,0,0.90)',
+        backgroundColor: 'black',
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: "center",

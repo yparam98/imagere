@@ -107,3 +107,6 @@ package.json
 
 .expo/packager-info.json
 .expo/settings.json
+
+# Keystore
+*.jks

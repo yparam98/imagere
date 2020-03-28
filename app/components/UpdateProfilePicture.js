@@ -10,6 +10,7 @@ import axios from 'axios';
 import Buffer from 'buffer';
 import * as ImagePicker from 'expo-image-picker';
 import { Camera } from 'expo-camera';
+import UtilityButton from './Button';
 
 class UpdateProfilePicture extends Component {
     constructor(props) {
@@ -77,22 +78,22 @@ class UpdateProfilePicture extends Component {
     }
 
     savePhoto() {
-            let formData = new FormData();
+        let formData = new FormData();
 
-            formData.append("profilePicture", { uri: this.state.photo.uri, name: this.state.myUser._id + ".jpg", type: "image/jpg" });
-            formData.append("user_id", this.state.myUser._id);
+        formData.append("profilePicture", { uri: this.state.photo.uri, name: this.state.myUser._id + ".jpg", type: "image/jpg" });
+        formData.append("user_id", this.state.myUser._id);
 
-            fetch(this.state.dataURL + "/add/user/profilePic", {
-                method: "post",
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-                body: formData,
-            }).then((response) => {
-                ToastAndroid.show("Photo saved successfully!", ToastAndroid.SHORT);
-            }).catch((err) => {
-                ToastAndroid.show("Photo did not save successfully!", ToastAndroid.SHORT);
-            });
+        fetch(this.state.dataURL + "/add/user/profilePic", {
+            method: "post",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+        }).then((response) => {
+            ToastAndroid.show("Photo saved successfully!", ToastAndroid.SHORT);
+        }).catch((err) => {
+            ToastAndroid.show("Photo did not save successfully!", ToastAndroid.SHORT);
+        });
     }
 
     render() {
@@ -101,18 +102,23 @@ class UpdateProfilePicture extends Component {
             <View style={settingsPageStyles.settingOptionContainer}>
                 <Text style={settingsPageStyles.headingStyle}>Update Profile Picture</Text>
                 <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.renderCamera()}>
-                    <Icon name='camera-retro' type='font-awesome' size={30} reverse/>
-                    <Text style={{ color: "white", fontSize: 20 }}>Take a photo!</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.uploadPhoto()}>
-                    <Icon name='upload' type='font-awesome' size={30} reverse/>
-                    <Text style={{ color: "white", fontSize: 20 }}>Upload photo.</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={settingsPageStyles.utilityButton} onPress={() => this.savePhoto()}>
-                    <Icon name='save' type='font-awesome' size={30} reverse/>
-                    <Text style={{ color: "white", fontSize: 20 }}>Save photo.</Text>
-                </TouchableOpacity>
+                <View style={{ alignItems: "stretch", margin: 40 }}>
+                    <View style={{ margin: 10 }}>
+                        <TouchableOpacity style={{ borderWidth: 0, backgroundColor: "purple", borderRadius: 45, margin: 5, flexDirection: "row", justifyContent: "center" }} onPress={() => this.renderCamera()}>
+                            <Text style={{ fontFamily: "Quicksand", fontSize: 32, color: "white", paddingTop: 20, paddingBottom: 20, paddingLeft: 15, paddingRight: 7 }}>Take a photo</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ margin: 10 }}>
+                        <TouchableOpacity style={{ borderWidth: 0, backgroundColor: "darkorange", borderRadius: 45, margin: 5, flexDirection: "row", justifyContent: "center" }} onPress={() => this.uploadPhoto()}>
+                            <Text style={{ fontFamily: "Quicksand", fontSize: 32, color: "white", paddingTop: 20, paddingBottom: 20, paddingLeft: 15, paddingRight: 7 }}>Upload a photo</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ margin: 10 }}>
+                        <TouchableOpacity style={{ borderWidth: 0, backgroundColor: "teal", borderRadius: 45, margin: 5, flexDirection: "row", justifyContent: "center" }} onPress={() => this.savePhoto()}>
+                            <Text style={{ fontFamily: "Quicksand", fontSize: 32, color: "white", paddingTop: 20, paddingBottom: 20, paddingLeft: 15, paddingRight: 7 }}>Save Photo</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
             </SafeAreaView>
         )
