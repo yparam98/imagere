@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, InteractionManager, Alert, TouchableOpacity, ToastAndroid, SafeAreaView } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { Text, View, Image, Button, InteractionManager, Alert, TouchableOpacity, ToastAndroid, SafeAreaView, ActivityIndicator } from 'react-native';
+import { Icon, Avatar } from 'react-native-elements';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import profilePageStyles from '../assets/css/profilePage_styles';
@@ -21,27 +21,27 @@ class UpdateProfilePicture extends Component {
            profilePictureLoaded: false,
            myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
            myUser: this.props.navigation.state.params.user,
-           dataURL: "http://myvmlab.senecacollege.ca:6746"
+           dataURL: "http://myvmlab.senecacollege.ca:6746/static/"
         }
     }
 
     async componentDidMount() {
-        //console.log("test updateProfilePicture:");
-        //console.log(this.props);
-        try {
-            let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+        // //console.log("test updateProfilePicture:");
+        // //console.log(this.props);
+        // try {
+        //     let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
 
-            this.setState({
-                profilePictureLoaded: true,
-                myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-            });
-        }
-        catch(error){
-            this.setState({
-                profilePictureLoaded: true,
-                myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
-            });
-        }
+        //     this.setState({
+        //         profilePictureLoaded: true,
+        //         myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
+        //     });
+        // }
+        // catch(error){
+        //     this.setState({
+        //         profilePictureLoaded: true,
+        //         myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
+        //     });
+        // }
 
         await Camera.requestPermissionsAsync();
     }
@@ -101,7 +101,13 @@ class UpdateProfilePicture extends Component {
             <SafeAreaView style={{flex: 1}}>
             <View style={settingsPageStyles.settingOptionContainer}>
                 <Text style={settingsPageStyles.headingStyle}>Update Profile Picture</Text>
-                <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
+                <View>
+                    {
+                        this.state.myUser.profilePicture ? (
+                            <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                        ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
+                    }
+                </View>
                 <View style={{ alignItems: "stretch", margin: 40 }}>
                     <View style={{ margin: 10 }}>
                         <TouchableOpacity style={{ borderWidth: 0, backgroundColor: "purple", borderRadius: 45, margin: 5, flexDirection: "row", justifyContent: "center" }} onPress={() => this.renderCamera()}>
