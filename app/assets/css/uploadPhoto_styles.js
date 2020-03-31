@@ -5,7 +5,7 @@ const uploadPhotoStyles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         justifyContent: "center",
-        backgroundColor: "white"
+        backgroundColor: "rgb(15,15,15)"
     },
     cameraIconStyle: {
         width: 100,

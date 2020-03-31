@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Text, View, Image, Button, InteractionManager, TouchableOpacity, UIManager, ActivityIndicator } from 'react-native';
+import { Text, View, Image, Button, InteractionManager, TouchableOpacity, UIManager, ActivityIndicator, FlatList, ImageBackground } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import Modal from 'react-native-modal';
+import axios from 'axios';
 import _ from 'lodash';
 import * as Font from 'expo-font';
 import profilePageStyles from '../assets/css/profilePage_styles';
@@ -11,7 +12,7 @@ import AsyncImage from './ImageRenderer';
 import { Avatar } from 'react-native-elements';
 
 class ProfileSampler extends Component {
-    constructor(props) { 
+    constructor(props) {
         super(props);
     }
 
@@ -32,23 +33,28 @@ class ProfileSampler extends Component {
             ['#114357', '#F29492'],
             ['#67B26F', '#4ca2cd'],
             ['#12c2e9', '#c471ed', '#f64f59']
-        ]
+        ],
+        pictureData: []
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
             'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
         });
 
-        this.setState({
-            fontLoaded: true,
+        await axios.get(
+            "http://myvmlab.senecacollege.ca:6746/user/pictures/" + this.state.myUser._id
+        ).then((incomingData) => {
+            this.setState({
+                pictureData: _.filter(incomingData.data, (element) => {
+                    return !element.metadatas.public // right now it renders EVERYTHING!! CHANGE TO PUBLIC ONCE PRIVATE/PUBLIC IS UP!!
+                }).reverse(),
+                fontLoaded: true,
+            });
+            console.log(incomingData.data[0]);
         });
-    }
-
-    renderProfilePic() {
-
     }
 
     renderDescription() {
@@ -67,6 +73,10 @@ class ProfileSampler extends Component {
         )
     }
 
+    renderPictures() {
+
+    }
+
     toggleModal() {
         this.setState({ visibleModal: !this.state.visibleModal });
         InteractionManager.runAfterInteractions(() => {
@@ -76,9 +86,9 @@ class ProfileSampler extends Component {
 
     render() {
         return (
-            <Modal style={{ margin: 0 }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={false} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
+            <Modal style={{ margin: 0, backgroundColor: "rgb(15,15,15)" }} isVisible={this.state.visibleModal} hasBackdrop={false} coverScreen={false} animationOut={"bounceOut"} onBackButtonPress={() => this.toggleModal()}>
                 <View style={{ flex: 1, flexDirection: "column" }}>
-                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>                        
+                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
                         {
                             this.state.myUser.profilePicture ? (
                                 <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
@@ -88,6 +98,15 @@ class ProfileSampler extends Component {
                         <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
                         {this.renderDescription()}
                     </LinearGradient>
+                    <FlatList
+                        data={this.state.pictureData}
+                        contentContainerStyle={{ alignItems: "center" }}
+                        renderItem={({ item }) =>
+                            <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%", alignItems: "center", margin: 10 }} blurRadius={25}>
+                                <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ aspectRatio: 1, width: "100%", alignSelf: "center", }} />
+                            </ImageBackground>
+                        }
+                        keyExtractor={item => item.metadatas._id} />
                 </View>
             </Modal>
         )

@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const newsfeedPageStyles = StyleSheet.create({
     newsfeedView: {
         // flex: 1
+        backgroundColor: "rgb(15,15,15)"
     },
     topBlackBackground: {
         backgroundColor: 'black',
@@ -37,7 +38,7 @@ const newsfeedPageStyles = StyleSheet.create({
         alignContent: "center"
     },
     newsfeedCardView: { // need to scale to device specs
-        backgroundColor: "white",
+        backgroundColor: "black",
         margin: 5,
         elevation: 3,
         borderRadius: 5,
@@ -48,13 +49,12 @@ const newsfeedPageStyles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 5
+        padding: 5,       
+        borderWidth: 1 
     },
     userTag: {
         borderRadius: 50,
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderWidth: 0,
-        backgroundColor: "black",
+        backgroundColor: "rgb(20,20,20)",
         flexDirection: "row",
         alignItems: "center"
     },
@@ -82,7 +82,8 @@ const newsfeedPageStyles = StyleSheet.create({
     identificationText: {
         alignSelf: "flex-end",
         padding: 10,
-        fontFamily: "Quicksand"
+        fontFamily: "Quicksand",
+        color: "white"
     },
     dateText: {
         alignSelf: "flex-end",

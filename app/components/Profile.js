@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl, ActivityIndicator } from 'react-native';
+import React, { PureComponent } from 'react';
+import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl, ActivityIndicator, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import _ from 'lodash';
+import moment from 'moment';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
 import UtilityButton from './Button';
-import { Icon, Avatar } from 'react-native-elements';;
+import { Icon, Avatar } from 'react-native-elements'; import AsyncImage from './ImageRenderer';
 
-class ProfilePage extends Component {
+class ProfilePage extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            dataURL: "http://myvmlab.senecacollege.ca:6746/static/",
+            dataURL: "http://myvmlab.senecacollege.ca:6746/",
             myUser: this.props.user,
             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
             selector: parseInt(Math.random() * 10),
@@ -29,62 +30,38 @@ class ProfilePage extends Component {
                 ['#114357', '#F29492'],
                 ['#67B26F', '#4ca2cd'],
                 ['#12c2e9', '#c471ed', '#f64f59']
-            ]
+            ],
+            newPictures: [],
+            privatePhotos: [],
+            publicPhotos: [],
         };
     }
 
-    // async componentDidMount() {
-    //     //console.log("Test ProfilePage");
-    //     //console.log(this.props.user);
-
-    //     try {
-    //         let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
-
-    //         this.setState({
-    //             myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-    //         });
-    //     } catch (error) {
-    //         this.setState({
-    //             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
-    //         });
-    //     }
-    // }
+    async componentDidMount() {
+        await axios.get(
+            this.state.dataURL + "user/pictures/" + this.state.myUser._id
+        ).then((incomingData) => {
+            this.setState({
+                newPictures: _.filter(incomingData.data, (element) => {
+                    return !element.approval;
+                }).reverse(),
+                privatePhotos: _.filter(incomingData.data, (element) => {
+                    return !element.metadatas.public && element.approval;
+                }).reverse(),
+                publicPhotos: _.filter(incomingData.data, (element) => {
+                    return element.metadatas.public && element.approval;
+                }).reverse(),
+            });
+        });
+    }
 
     on_settings_press() {
-        // console.log(this.props);
-        // console.log("settings page clicked");
-        //console.log(this.props.user);
         this.props.navMod.navigate('Settings', { navigation: this.props.navMod, user: this.props.user });
     }
 
     renderProfilePicture() {
-        // return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
         <Avatar rounded title="YP" size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
 
-    }
-
-    renderNewPics() {
-        return this.state.myUser.newPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPrivatePics() {
-        return this.state.myUser.privatePhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPublicPics() {
-        return this.state.myUser.publicPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
     }
 
     renderDescription() {
@@ -95,25 +72,22 @@ class ProfilePage extends Component {
         )
     }
 
-    renderPencilIcon() {
+    renderSettingsIcon() {
         return (
             <Icon name="settings" type="material" reverse raised containerStyle={{ alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()} />
-            // <View style={{ alignItems: "flex-end" }}>
-            //     <UtilityButton title={"Settings"} icon={"settings"} color={"darkgreen"} onPress={() => this.on_settings_press()} />
-            // </View>
         )
     }
 
 
     renderProfilePage() {
         return (
-            <View>
-                <View style={{ marginBottom: 180 }}>
+            <View style={{ flex: 1 }}>
+                <View style={{ marginBottom: 180, flex: 1 }}>
                     <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
-                        {this.renderPencilIcon()}
+                        {this.renderSettingsIcon()}
                         {
                             this.state.myUser.profilePicture ? (
-                                <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                                <Avatar rounded source={{ uri: this.state.dataURL + "static/" + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
                             ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
                         }
                         <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
@@ -121,18 +95,32 @@ class ProfilePage extends Component {
                         {this.renderDescription()}
                     </LinearGradient>
 
-                    {/* <Text style={profilePageStyles.helperTextView}>new</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderNewPics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>private</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPrivatePics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>public</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPublicPics()}
-                        </ScrollView> */}
+                    <Text style={profilePageStyles.subTextView}>pending approval</Text>
+                    <FlatList
+                        data={this.state.newPictures}
+                        horizontal={true}
+                        renderItem={({ item }) =>
+                            <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                        }
+                        keyExtractor={item => item.metadatas._id} />
+
+                    <Text style={profilePageStyles.subTextView}>private</Text>
+                    <FlatList
+                        data={this.state.privatePhotos}
+                        horizontal={true}
+                        renderItem={({ item }) =>
+                            <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                        }
+                        keyExtractor={item => item.metadatas._id} />
+
+                    <Text style={profilePageStyles.subTextView}>public</Text>
+                    <FlatList
+                        data={this.state.publicPhotos}
+                        horizontal={true}
+                        renderItem={({ item }) =>
+                            <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                        }
+                        keyExtractor={item => item.metadatas._id} />
                 </View>
             </View>
         )
@@ -140,13 +128,13 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 {this.renderProfilePage()}
             </View>
         )
     }
 }
-class Profile extends Component {
+class Profile extends PureComponent {
     constructor(props) {
         super(props);
     }
@@ -172,7 +160,7 @@ class Profile extends Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 {
                     this.state.fontLoaded ? (
                         <View style={profilePageStyles.profileView}>
