@@ -15,10 +15,18 @@ import Photo from './Photo';
 class UploadPhoto extends Component {
     constructor(props) {
         super(props);
+        this.handler = this.handler.bind(this);
         this.state = {
             specPhoto: "",
             device_location: ""
         }
+    }
+
+    handler(photo) {
+        this.setState({
+            specPhoto: photo,
+            device_location: "",
+        });
     }
 
     state = {
@@ -89,7 +97,7 @@ class UploadPhoto extends Component {
 
     render() {
         return (
-            <View style={{ flex: 1}}>
+            <View style={{ flex: 1 }}>
                 {
                     this.state.fontLoaded ? this.state.specPhoto == "" ? (
                         <View style={uploadPhotoStyles.uploadPictureView}>
@@ -104,7 +112,7 @@ class UploadPhoto extends Component {
                                 </View>
                             </TouchableOpacity>
                         </View>
-                    ) : <Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userId={this.props.userData._id} navigationModule={this.props.navigationModule}/> : null
+                    ) : <Photo uri={this.state.specPhoto.uri} device_location={this.state.device_location} userObj={this.props.userData} handler={this.handler} /> : null
                 }
             </View>
         );

@@ -10,8 +10,15 @@ class Photo extends Component {
 		this.state = {
 			dataURL: "http://myvmlab.senecacollege.ca:6746",
 			resultsObj: "",
-			submitted: false
+			submitted: false,
 		};
+	}
+
+	componentDidMount() {
+		this.setState({
+			resultsObj: "",
+			submitted: false,
+		});
 	}
 
 	async onUpload() {
@@ -22,7 +29,7 @@ class Photo extends Component {
 		try {
 			var formData = new FormData();
 			formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
-			formData.append("userId", this.props.userId);
+			formData.append("userId", this.props.userObj._id);
 			formData.append("locationTaken", this.props.device_location);
 
 			axios({
@@ -49,7 +56,7 @@ class Photo extends Component {
 					!this.state.submitted ? (
 						<View>
 							<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, alignSelf: "center", margin: 10 }} resizeMode="contain" />
-							<View style={{alignItems: "center"}}>
+							<View style={{ alignItems: "center" }}>
 								<UtilityButton title={"Upload Photo"} icon={"cloud-upload"} color={"black"} onPress={() => this.onUpload()} />
 							</View>
 						</View>
@@ -57,7 +64,7 @@ class Photo extends Component {
 							{
 								this.state.resultsObj == "" ? (
 									<View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
-								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} navigationModule={this.props.navigationModule}/>
+								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} handler={this.props.handler} userData={this.props.userObj} />
 							}
 						</View>
 				}
