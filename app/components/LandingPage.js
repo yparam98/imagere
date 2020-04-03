@@ -19,6 +19,7 @@ import ContactUs from './ContactUs';
 import Settings from './Settings';
 import UpdateUserInformation from './UpdateUserInformation';
 import UpdatePassword from './UpdatePassword';
+import RecoverPassword from './RecoverPassword';
 
 class LandingPage extends Component {
 
@@ -103,10 +104,6 @@ const MainNavigator = createStackNavigator(
         },
         UploadPhoto: {
             screen: UploadPhoto,
-            navigationOptions: { headerShown: false }
-        },
-        ProfileSampler: {
-            screen: ProfileSampler,
             navigationOptions: { headerShown: false }
         },
         Settings: {
