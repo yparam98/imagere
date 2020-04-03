@@ -86,7 +86,8 @@ class Newsfeed extends PureComponent {
                                     animationType={"slide"}
                                     transparent={true}
                                     width={"90%"}
-                                    height={"90%"}>
+                                    height={"90%"}
+                                    overlayBackgroundColor={"rgb(0,0,0)"}>
                                     <ProfileSampler myUser={this.state.selectedUser}/>
                                 </Overlay>
                             </View>

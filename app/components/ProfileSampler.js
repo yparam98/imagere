@@ -77,7 +77,7 @@ class ProfileSampler extends Component {
                     data={this.state.pictureData}
                     contentContainerStyle={{ alignItems: "center" }}
                     renderItem={({ item }) =>
-                        <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%", alignItems: "center", margin: 0 }} blurRadius={25}>
+                        <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(item.pathToPicture)[1] }} style={{ width: "100%", alignItems: "center", margin: 2 }} blurRadius={25}>
                             <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ aspectRatio: 1, width: "100%", alignSelf: "center", }} />
                         </ImageBackground>
                     }
