@@ -107,6 +107,8 @@ class Photo extends Component {
 					data: {
 						data: this.getIdentification(incomingResponse.data.nnResult[0].label) + incomingResponse.data.nnResult[0].percentile
 					},
+					priority: "max",
+					channelId: 'default',
 					_displayInForeground: true,
 				};
 
@@ -148,7 +150,7 @@ class Photo extends Component {
 								this.state.resultsObj == "" ? (
 									<View style={{ alignSelf: "center", margin: 5 }}>
 										<View style={{ padding: 25 }}><ActivityIndicator size="large" color="grey" /></View>
-										<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 18, margin: 15 }}>We'll let you know when we get a result...</Text>
+										<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 14, margin: 15, color: "grey" }}>We'll send you a notification when your image is ready ;)</Text>
 									</View>
 								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} handler={this.props.handler} userData={this.props.userObj} />
 							}
