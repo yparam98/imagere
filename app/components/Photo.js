@@ -85,8 +85,6 @@ class Photo extends Component {
 			submitted: true
 		});
 
-		// let message = {};
-
 		try {
 			var formData = new FormData();
 			formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
@@ -107,8 +105,6 @@ class Photo extends Component {
 					data: {
 						data: this.getIdentification(incomingResponse.data.nnResult[0].label) + incomingResponse.data.nnResult[0].percentile
 					},
-					priority: "max",
-					channelId: 'default',
 					_displayInForeground: true,
 				};
 

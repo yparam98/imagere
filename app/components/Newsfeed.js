@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import NewsfeedPanel from './NewsfeedPanel';
 import { Overlay } from 'react-native-elements';
 import ProfileSampler from './ProfileSampler';
 
-class Newsfeed extends PureComponent {
+class Newsfeed extends Component {
     constructor(props) {
         super(props);
         this.handler = this.handler.bind(this);
@@ -47,29 +47,32 @@ class Newsfeed extends PureComponent {
     }
 
     async fetchData() {
+        var index = 0;
+        var dataArr = [];
+
         await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
             .then((response) => {
                 response.data.reverse();
-                var index = 0;
+
                 for (let pictureObj of response.data) {
                     index = index + 1;
 
                     if (pictureObj != undefined && pictureObj.metadata != undefined && pictureObj.categorization != undefined) {
                         if (pictureObj.metadata.photographer != null) {
-                            this.state.myData.push(pictureObj);
+                            dataArr.push(pictureObj);
                         }
-                    }
-
-                    if (index === 5) {
-                        this.setState({
-                            dataLoaded: true
-                        });
                     }
                 }
             })
             .catch((err) => {
                 console.log("error retrieving data from API: " + err);
             });
+
+        console.log("saved")
+        this.setState({
+            dataLoaded: true,
+            myData: dataArr,
+        });
     }
 
     render() {
@@ -89,7 +92,8 @@ class Newsfeed extends PureComponent {
                             extraData={this.state.myData}
                             renderItem={({ item }) =>
                                 <NewsfeedPanel userObj={item} handler={this.handler} />
-                            } keyExtractor={item => item._id} />
+                            }
+                            keyExtractor={item => item._id} />
 
                         <Overlay
                             isVisible={this.state.overlayVisible}
