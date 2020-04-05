@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { FlatList, View, Text, ActivityIndicator, TouchableOpacity, ImageBackground } from "react-native";
-import { Avatar } from 'react-native-elements';
+import { Avatar, Icon } from 'react-native-elements';
 import newsfeedPageStyles from "../assets/css/newsfeedPage_styles";
 import moment from "moment";
 import AsyncImage from "./ImageRenderer";
@@ -67,11 +67,29 @@ class NewsfeedPanel extends PureComponent {
                     </TouchableOpacity>
                     {this.getLocation(this.props.userObj.metadata.locationTaken)}
                 </View>
-                <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(this.props.userObj.pathToPicture)[1] }} style={{ width: "100%" }} blurRadius={25}>
+                <ImageBackground source={{ uri: "http://myvmlab.senecacollege.ca:6746/static/" + RegExp(/^[a-z]*\/(.*)/).exec(this.props.userObj.pathToPicture)[1] }} style={{ width: "100%" }} blurRadius={20}>
                     <AsyncImage incomingPictureURL={this.props.userObj.pathToPicture} incomingStyleObj={newsfeedPageStyles.speciesImage} />
                 </ImageBackground>
-                <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(this.props.userObj.categorization.nnResult[0].label)}</Text>
-                {this.getPostDate(this.props.userObj.metadata.dateTaken)}
+                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", alignSelf: "flex-start", margin: 5 }}>
+                        <Icon
+                            name='thumb-up'
+                            type='material'
+                            color='darkgreen'
+                            size={36}
+                            containerStyle={{ margin: 5 }} />
+                        <Icon
+                            name='thumb-down'
+                            type='material'
+                            color='darkred'
+                            size={36}
+                            containerStyle={{ margin: 5 }} />
+                    </View>
+                    <View style={{ flexDirection: "column", alignSelf: "flex-end" }}>
+                        <Text style={newsfeedPageStyles.identificationText}>Identified as: {this.getIdentification(this.props.userObj.categorization.nnResult[0].label)}</Text>
+                        {this.getPostDate(this.props.userObj.metadata.dateTaken)}
+                    </View>
+                </View>
             </View>
         )
     }

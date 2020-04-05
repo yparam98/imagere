@@ -77,7 +77,7 @@ class UploadPhoto extends Component {
     }
 
     getLocation = async () => {
-        let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION);
+        let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION, PermissionsModule.NOTIFICATIONS);
         let location = await LocationModule.getCurrentPositionAsync({});
 
 

@@ -45,7 +45,7 @@ class ResultsView extends Component {
                                                 <Text style={{ fontFamily: "Quicksand-Medium", fontSize: 25, color: "white", alignSelf: "flex-start" }}>{this.getIdentification(item.label)}</Text>
                                                 <Text style={{ fontFamily: "Quicksand-Medium", fontSize: 25, alignSelf: "flex-end", color: "rgb(134,221,147)" }}>{item.percentile}%</Text>
                                             </View>
-                                        } keyExtractor={item => Math.random() * 2} />
+                                        } keyExtractor={item => toString(Math.random() * 2)} />
                                     </View>
                                 ) : <Text style={{ fontFamily: "Quicksand-Medium", fontSize: 25, color: "white", alignSelf: "center", padding: 25 }}>Picture has already been identified...</Text>
                             }

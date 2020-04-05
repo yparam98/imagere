@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, FlatList, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import axios from 'axios';
@@ -7,7 +7,7 @@ import NewsfeedPanel from './NewsfeedPanel';
 import { Overlay } from 'react-native-elements';
 import ProfileSampler from './ProfileSampler';
 
-class Newsfeed extends Component {
+class Newsfeed extends PureComponent {
     constructor(props) {
         super(props);
         this.handler = this.handler.bind(this);
@@ -39,14 +39,14 @@ class Newsfeed extends Component {
             'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
         });
 
-        this.refreshData();
+        this.fetchData();
 
         this.setState({
             fontLoaded: true,
         });
     }
 
-    async refreshData() {
+    async fetchData() {
         await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
             .then((response) => {
                 response.data.reverse();
@@ -60,10 +60,9 @@ class Newsfeed extends Component {
                         }
                     }
 
-                    // janky ass lazy loading FTW
                     if (index === 5) {
                         this.setState({
-                            dataLoaded: true,
+                            dataLoaded: true
                         });
                     }
                 }
@@ -78,9 +77,19 @@ class Newsfeed extends Component {
             <View style={{ flex: 1 }}>
                 <View style={newsfeedPageStyles.newsfeedView}>
                     <View>
-                        <FlatList data={this.state.myData} initialNumToRender={5} showsVerticalScrollIndicator={false} refreshing={!this.state.dataLoaded} onRefresh={() => { this.setState({ dataLoaded: false }); this.refreshData(); }} renderItem={({ item }) =>
-                            <NewsfeedPanel userObj={item} handler={this.handler} />
-                        } keyExtractor={item => item._id} />
+                        <FlatList
+                            data={this.state.myData}
+                            initialNumToRender={5}
+                            showsVerticalScrollIndicator={false}
+                            refreshing={!this.state.dataLoaded}
+                            onRefresh={() => {
+                                this.setState({ dataLoaded: false });
+                                this.fetchData();
+                            }}
+                            extraData={this.state.myData}
+                            renderItem={({ item }) =>
+                                <NewsfeedPanel userObj={item} handler={this.handler} />
+                            } keyExtractor={item => item._id} />
 
                         <Overlay
                             isVisible={this.state.overlayVisible}
@@ -92,7 +101,7 @@ class Newsfeed extends Component {
                             overlayBackgroundColor={"rgb(0,0,0)"}>
                             <ProfileSampler myUser={this.state.selectedUser} />
                         </Overlay>
-                    </View>                    
+                    </View>
                 </View>
             </View>
         );

@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const newsfeedPageStyles = StyleSheet.create({
     newsfeedView: {
-        // flex: 1
+        // flex: 3,
         backgroundColor: "rgb(15,15,15)"
     },
     topBlackBackground: {
@@ -41,8 +41,9 @@ const newsfeedPageStyles = StyleSheet.create({
         backgroundColor: "black",
         margin: 5,
         elevation: 3,
-        borderRadius: 5,
-        alignContent: "center"
+        // alignContent: "center",
+        // flexDirection: "column",
+        // flexWrap: "nowrap",
     },
     userTagDateContainer: {
         flex: 1,
@@ -77,20 +78,19 @@ const newsfeedPageStyles = StyleSheet.create({
     speciesImage: {
         aspectRatio: 1,
         width: "100%",
-        alignSelf: "center",
+        // height: 1088,
     },
     identificationText: {
-        alignSelf: "flex-end",
         padding: 10,
         fontFamily: "Quicksand",
         color: "white"
     },
     dateText: {
-        alignSelf: "flex-end",
         padding: 10,
         fontFamily: "Quicksand",
         fontSize: 10,
-        color: "grey"
+        color: "grey",
+        alignSelf: "flex-end"
     },
     locationText: {
         fontFamily: "Quicksand-Medium",
