@@ -68,7 +68,6 @@ class Newsfeed extends Component {
                 console.log("error retrieving data from API: " + err);
             });
 
-        console.log("saved")
         this.setState({
             dataLoaded: true,
             myData: dataArr,
