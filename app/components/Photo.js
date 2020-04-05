@@ -146,9 +146,9 @@ class Photo extends Component {
 					) : <View>
 							{
 								this.state.resultsObj == "" ? (
-									<View>
-										<View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
-										<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 24 }}>We'll let you know when we get a result...</Text>
+									<View style={{ alignSelf: "center", margin: 5 }}>
+										<View style={{ padding: 25 }}><ActivityIndicator size="large" color="grey" /></View>
+										<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 18, margin: 15 }}>We'll let you know when we get a result...</Text>
 									</View>
 								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} handler={this.props.handler} userData={this.props.userObj} />
 							}
