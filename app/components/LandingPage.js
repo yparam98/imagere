@@ -19,6 +19,7 @@ import ContactUs from './ContactUs';
 import Settings from './Settings';
 import UpdateUserInformation from './UpdateUserInformation';
 import UpdatePassword from './UpdatePassword';
+import SetPublicOrPrivate from './SetPublicOrPrivate';
 import RecoverPassword from './RecoverPassword';
 
 class LandingPage extends Component {
@@ -132,6 +133,10 @@ const MainNavigator = createStackNavigator(
         },
         UpdatePassword: {
             screen: UpdatePassword,
+            navigationOptions: { headerShown: false }
+        },
+        SetPublicOrPrivate: {
+            screen: SetPublicOrPrivate,
             navigationOptions: { headerShown: false }
         }
     },
