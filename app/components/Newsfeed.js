@@ -57,9 +57,25 @@ class Newsfeed extends Component {
                 for (let pictureObj of response.data) {
                     index = index + 1;
 
-                    if (pictureObj != undefined && pictureObj.metadata != undefined && pictureObj.categorization != undefined) {
-                        if (pictureObj.metadata.photographer != null) {
-                            dataArr.push(pictureObj);
+                    // pictureObj != undefined
+                    // pictureObj != undefined
+                    // pictureObj.metadata != undefined
+                    // pictureObj.categorization != undefined
+                    // pictureObj.categorization.nnResult[0].label != undefined
+                    // pictureObj.metadata.photographer != null
+                    // dataArr.push(pictureObj);
+
+                    if (pictureObj != undefined) {
+                        if (pictureObj.metadata != undefined) {
+                            if (pictureObj.metadata.photographer != undefined) {
+                                if (pictureObj.categorization != undefined) {
+                                    if (pictureObj.categorization.nnResult[0] != undefined) {
+                                        if (pictureObj.categorization.nnResult[0].label != undefined) {
+                                            dataArr.push(pictureObj);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

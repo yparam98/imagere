@@ -77,7 +77,7 @@ class UploadPhoto extends Component {
     }
 
     getLocation = async () => {
-        let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION, PermissionsModule.NOTIFICATIONS);
+        let { status } = await PermissionsModule.askAsync(PermissionsModule.LOCATION);
         let location = await LocationModule.getCurrentPositionAsync({});
 
 
@@ -99,7 +99,7 @@ class UploadPhoto extends Component {
         return (
             <View style={{ flex: 1 }}>
                 {
-                    this.state.fontLoaded ? this.state.specPhoto == "" ? (
+                    this.state.fontLoaded ? this.state.specPhoto == "" && this.state.device_location == "" ? (
                         <View style={uploadPhotoStyles.uploadPictureView}>
                             <TouchableOpacity style={_.merge({}, uploadPhotoStyles.touchCardStyle, { backgroundColor: "darkorange" })} onPressIn={() => this.uploadPhoto()}>
                                 <View>

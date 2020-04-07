@@ -17,6 +17,7 @@ class Photo extends Component {
 			expoPushToken: '',
 			notification: {},
 			notificationSent: false,
+			errorQ: false,
 		};
 	}
 
@@ -89,7 +90,7 @@ class Photo extends Component {
 			var formData = new FormData();
 			formData.append("speciesPicture", { uri: this.props.uri, name: "uploadedPhoto.jpg", type: "image/jpg" });
 			formData.append("userId", this.props.userObj._id);
-			formData.append("locationTaken", this.props.device_location);
+			formData.append("device_location", this.props.device_location);
 
 			await axios({
 				method: 'post',
@@ -123,10 +124,16 @@ class Photo extends Component {
 					notificationSent: true,
 				});
 			}).catch((errObj) => {
-				console.log(errObj);
+				console.log("unable to parse recognition!");
+				this.setState({
+					errorQ: true,
+				});
 			});
 		} catch (error) {
-			console.log(error)
+			console.log("unable to recognize image!");
+			this.setState({
+				errorQ: true,
+			});
 		}
 	}
 
@@ -136,17 +143,26 @@ class Photo extends Component {
 				{
 					!this.state.submitted ? (
 						<View>
-							<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, alignSelf: "center", margin: 10 }} resizeMode="contain" />
 							<View style={{ alignItems: "center" }}>
+								<Image source={{ uri: this.props.uri }} style={{ height: 400, aspectRatio: 0.80, margin: 10 }} resizeMode="contain" />
 								<UtilityButton title={"Upload Photo"} icon={"cloud-upload"} color={"black"} onPress={() => this.sendPushNotification()} />
 							</View>
 						</View>
 					) : <View>
 							{
 								this.state.resultsObj == "" ? (
-									<View style={{ alignSelf: "center", margin: 5 }}>
-										<View style={{ padding: 25 }}><ActivityIndicator size="large" color="grey" /></View>
-										<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 14, margin: 15, color: "grey" }}>We'll send you a notification when your image is ready ;)</Text>
+									<View style={{ alignSelf: "center"}}>
+										{
+											this.state.errorQ ? (
+												<View style={{margin: 10, alignItems: "center"}}>
+													<UtilityButton title={"Try again"} icon={"refresh"} color={"black"} onPress={() => this.props.handler("")} />
+													<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 14, margin: 15, color: "grey" }}>Unable to process identification :(</Text>
+												</View>
+											) : <View>
+													<View style={{ padding: 25 }}><ActivityIndicator size="large" color="grey" /></View>
+													<Text style={{ fontFamily: "Quicksand-Medium", fontSize: 14, margin: 15, color: "grey" }}>We'll send you a notification when your image is ready ;)</Text>
+												</View>
+										}
 									</View>
 								) : <ResultsView inResultsObj={this.state.resultsObj} inSpeciesPic={this.props.uri} handler={this.props.handler} userData={this.props.userObj} />
 							}
