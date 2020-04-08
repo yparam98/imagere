@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, Text, View, SafeAreaView, Image, ScrollView, Dimensions } from 'react-native';
+import { TouchableOpacity, Text, View, SafeAreaView, Image, ScrollView, Dimensions, Alert } from 'react-native';
 import { ButtonGroup, Button } from 'react-native-elements';
 import _ from 'lodash';
 import * as Font from 'expo-font';
@@ -45,8 +45,23 @@ export default class SetPublicOrPrivate extends Component {
                         titleStyle={{ fontFamily: "Quicksand-Medium" }}
                         title={"Delete"}
                         onPress={() => {
-                            Axios.delete("http://myvmlab.senecacollege.ca:6746/user/picture/" + this.state.picture._id);
-                            this.props.handler();
+                            Alert.alert(
+                                "Delete Confirmation",
+                                "Are you sure you want to delete this?",
+                                [
+                                    {
+                                        text: "Yes", onPress: () => {
+                                            Axios.delete("http://myvmlab.senecacollege.ca:6746/user/picture/" + this.state.picture._id);
+                                            this.props.handler();
+                                        }
+                                    },
+                                    {
+                                        text: "No", onPress: () => {
+                                            this.props.handler();
+                                        }
+                                    }
+                                ]
+                            )
                         }} />
                 </View>
                 {/* <ScrollView style={{ flex: 1 }}>
