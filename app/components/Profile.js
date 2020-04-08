@@ -16,6 +16,7 @@ import SetPublicOrPrivate from './SetPublicOrPrivate';
 class Profile extends PureComponent {
     constructor(props) {
         super(props);
+        this.handler = this.handler.bind(this);
         this.state = {
             myUser: this.props.userData,
             dataURL: "http://myvmlab.senecacollege.ca:6746/",
@@ -34,10 +35,17 @@ class Profile extends PureComponent {
                 ['#67B26F', '#4ca2cd'],
                 ['#12c2e9', '#c471ed', '#f64f59']
             ],
-            newPictures: [],
+            // newPictures: [],
             privatePhotos: [],
             publicPhotos: [],
         };
+    }
+
+    handler() {
+        this.setState({
+            overlayVisible: false,
+        });
+        this.fetchData();
     }
 
     state = {
@@ -50,25 +58,32 @@ class Profile extends PureComponent {
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
             'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
         });
+        
+        this.fetchData();
+
+        this.setState({
+            fontLoaded: true,
+        });
+    }
+
+    async fetchData() {
+        let privateArr = [];
+        let publicArr = [];
 
         await axios.get(
             this.state.dataURL + "user/pictures/" + this.state.myUser._id
         ).then((incomingData) => {
-            this.setState({
-                newPictures: _.filter(incomingData.data, (element) => {
-                    return !element.approval;
-                }).reverse(),
-                privatePhotos: _.filter(incomingData.data, (element) => {
-                    return !element.metadatas.public && element.approval;
-                }).reverse(),
-                publicPhotos: _.filter(incomingData.data, (element) => {
-                    return element.metadatas.public && element.approval;
-                }).reverse(),
-            });
+            privateArr = _.filter(incomingData.data, (element) => {
+                return !element.metadatas.public
+            }).reverse();
+            publicArr = _.filter(incomingData.data, (element) => {
+                return element.metadatas.public
+            }).reverse();
         });
 
         this.setState({
-            fontLoaded: true,
+            privatePhotos: privateArr,
+            publicPhotos: publicArr,
         });
     }
 
@@ -130,7 +145,7 @@ class Profile extends PureComponent {
                                             {this.renderDescription()}
                                         </LinearGradient>
 
-                                        <Text style={profilePageStyles.subTextView}>pending approval</Text>
+                                        {/* <Text style={profilePageStyles.subTextView}>pending approval</Text>
                                         <FlatList
                                             data={this.state.newPictures}
                                             horizontal={true}
@@ -139,12 +154,13 @@ class Profile extends PureComponent {
                                                     <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
                                                 </TouchableOpacity>
                                             }
-                                            keyExtractor={item => item.metadatas._id} />
+                                            keyExtractor={item => item.metadatas._id} /> */}
 
                                         <Text style={profilePageStyles.subTextView}>private</Text>
                                         <FlatList
                                             data={this.state.privatePhotos}
                                             horizontal={true}
+                                            extraData={this.state.privatePhotos}
                                             renderItem={({ item }) =>
                                                 <TouchableOpacity onPress={() => { this.photoOptions(item) }}>
                                                     <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
@@ -156,6 +172,7 @@ class Profile extends PureComponent {
                                         <FlatList
                                             data={this.state.publicPhotos}
                                             horizontal={true}
+                                            extraData={this.state.publicPhotos}
                                             renderItem={({ item }) =>
                                                 <TouchableOpacity onPress={() => { this.photoOptions(item) }}>
                                                     <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
@@ -174,9 +191,9 @@ class Profile extends PureComponent {
                     animationType={"slide"}
                     transparent={true}
                     width={"90%"}
-                    height={"90%"}
-                    overlayBackgroundColor={"rgb(0,0,0)"}>
-                    <SetPublicOrPrivate picture={this.state.selectedPhoto} />
+                    height={"80%"}
+                    overlayBackgroundColor={"rgba(0,0,0,0.5)"}>
+                    <SetPublicOrPrivate picture={this.state.selectedPhoto} handler={this.handler}/>
                 </Overlay>
             </View>
         );

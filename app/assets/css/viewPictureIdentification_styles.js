@@ -6,13 +6,13 @@ const viewPictureIdentificationStyles = StyleSheet.create({
         fontSize: 34, 
         textAlign: 'center', 
         textAlignVertical: 'center', 
-        marginBottom: 10
+        marginBottom: 0
     },
     container: {
         flexDirection: 'column', 
         flex: 1, 
-        backgroundColor: 'rgb(33,33,33)',
-        paddingTop: 20, 
+        backgroundColor: 'rgb(15,15,15)',
+        paddingTop: 0, 
     },
     backIcon: {
         width: 512 / 15,
@@ -22,12 +22,12 @@ const viewPictureIdentificationStyles = StyleSheet.create({
     pictureContainer: {
         justifyContent: 'center', 
         alignItems: 'center',
-        marginTop: 25
+        marginTop: 0
     },
     resultsContainer:{
         flex: 1,
         flexDirection: 'row',
-        marginTop: 10,
+        marginTop: 0,
         marginHorizontal: 40,
         justifyContent: 'center',
         alignItems: 'center',
@@ -50,7 +50,7 @@ const viewPictureIdentificationStyles = StyleSheet.create({
         marginTop: 20,
         marginBottom: 10,
         marginHorizontal: 40,
-        alignItems: 'center'
+        alignItems: 'stretch'
     }
 });
 
