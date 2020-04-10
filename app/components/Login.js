@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar } from 'react-native';
+import { View, Image, ImageBackground, StatusBar } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
-import { StackRouter } from 'react-navigation';
-import SignUp from './SignUp';
 import _ from 'lodash';
 import axios from 'axios';
 import loginPageStyles from '../assets/css/loginPage_styles';
 import sharedStyles from '../assets/css/shared_styles';
 import UtilityButton from './Button';
+import { Overlay } from 'react-native-elements';
+import RecoverPassword from './RecoverPassword';
 
 class Login extends Component {
     constructor(props) {
@@ -17,7 +17,8 @@ class Login extends Component {
             dataURL: "http://myvmlab.senecacollege.ca:6746",
             username: "",
             password: "",
-            currentUser: ""
+            currentUser: "",
+            overlayVisible: false,
         };
     }
 
@@ -40,7 +41,10 @@ class Login extends Component {
     }
 
     forgot_password_press() {
-        ToastAndroid.show('forgot my password!', ToastAndroid.SHORT);
+        this.setState({
+            overlayVisible: true,
+        });
+        // incomingNavObj('RecoverPassword');
     }
 
     loginAuthenticated(myNavigate) {
@@ -130,6 +134,13 @@ class Login extends Component {
                         ) : null
                     }
                 </View>
+                <Overlay
+                    isVisible={this.state.overlayVisible}
+                    onBackdropPress={() => { this.setState({ overlayVisible: false }) }}
+                    animationType={"slide"}
+                    transparent={true}>
+                    <RecoverPassword/>
+                </Overlay>
             </ImageBackground>
         );
     }

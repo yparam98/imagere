@@ -25,7 +25,10 @@
     "android": {
       "package": "com.prj666.imagere",
       "icon": "app/assets/icons/android_icon_1024.png",
-      "versionCode": 8
+      "versionCode": 10
+    },
+    "notification": {
+      "icon": "app/assets/icons/android_icon_1024.png"
     }
   }
 }

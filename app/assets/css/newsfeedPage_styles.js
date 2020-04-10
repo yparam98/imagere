@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const newsfeedPageStyles = StyleSheet.create({
     newsfeedView: {
-        // flex: 1
+        // flex: 3,
+        backgroundColor: "rgb(15,15,15)"
     },
     topBlackBackground: {
         backgroundColor: 'black',
@@ -37,24 +38,24 @@ const newsfeedPageStyles = StyleSheet.create({
         alignContent: "center"
     },
     newsfeedCardView: { // need to scale to device specs
-        backgroundColor: "white",
+        backgroundColor: "black",
         margin: 5,
         elevation: 3,
-        borderRadius: 5,
-        alignContent: "center"
+        // alignContent: "center",
+        // flexDirection: "column",
+        // flexWrap: "nowrap",
     },
     userTagDateContainer: {
         flex: 1,
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 5
+        padding: 5,       
+        borderWidth: 1 
     },
     userTag: {
         borderRadius: 50,
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderWidth: 0,
-        backgroundColor: "black",
+        backgroundColor: "rgb(20,20,20)",
         flexDirection: "row",
         alignItems: "center"
     },
@@ -77,19 +78,19 @@ const newsfeedPageStyles = StyleSheet.create({
     speciesImage: {
         aspectRatio: 1,
         width: "100%",
-        alignSelf: "center",
+        // height: 1088,
     },
     identificationText: {
-        alignSelf: "flex-end",
         padding: 10,
-        fontFamily: "Quicksand"
+        fontFamily: "Quicksand",
+        color: "white"
     },
     dateText: {
-        alignSelf: "flex-end",
         padding: 10,
         fontFamily: "Quicksand",
         fontSize: 10,
-        color: "grey"
+        color: "grey",
+        alignSelf: "flex-end"
     },
     locationText: {
         fontFamily: "Quicksand-Medium",

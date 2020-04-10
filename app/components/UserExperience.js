@@ -72,7 +72,7 @@ class UserExperience extends Component {
                     <Newsfeed navigation={this.props.navigation} />
                 </View>
                 <View key="2">
-                    <UploadPhoto userData={this.state.currentUserObject} navigationModule={this.props.navigation}/>
+                    <UploadPhoto userData={this.state.currentUserObject} navigationModule={this.props.navigation} />
                 </View>
                 <View key="3">
                     <Profile userData={this.state.currentUserObject} navigationModule={this.props.navigation} />
