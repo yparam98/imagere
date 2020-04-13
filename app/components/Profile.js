@@ -1,23 +1,28 @@
-import React, { Component } from 'react';
-import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl, ActivityIndicator } from 'react-native';
+import React, { PureComponent } from 'react';
+import { Text, View, Image, StyleSheet, ImageBackground, ToastAndroid, TouchableHighlight, StatusBar, Platform, RefreshControl, ActivityIndicator, FlatList, TouchableOpacity } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as Font from 'expo-font';
 import _ from 'lodash';
+import moment from 'moment';
 import profilePageStyles from '../assets/css/profilePage_styles';
 import axios from 'axios';
 import Buffer from 'buffer';
 import { LinearGradient } from 'expo-linear-gradient';
 import UtilityButton from './Button';
-import { Icon, Avatar } from 'react-native-elements';;
+import { Icon, Avatar, Overlay } from 'react-native-elements'; 
+import AsyncImage from './ImageRenderer';
+import SetPublicOrPrivate from './SetPublicOrPrivate';
 
-class ProfilePage extends Component {
+class Profile extends PureComponent {
     constructor(props) {
         super(props);
+        this.handler = this.handler.bind(this);
         this.state = {
-            dataURL: "http://myvmlab.senecacollege.ca:6746/static/",
-            myUser: this.props.user,
-            myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg",
+            myUser: this.props.userData,
+            dataURL: "http://myvmlab.senecacollege.ca:6746/",
             selector: parseInt(Math.random() * 10),
+            selectedPhoto: '',
+            overlayVisible: false,
             backgroundImg: [
                 ['#659999', '#f4791f'],
                 ['#00B4DB', '#0083B0'],
@@ -29,62 +34,66 @@ class ProfilePage extends Component {
                 ['#114357', '#F29492'],
                 ['#67B26F', '#4ca2cd'],
                 ['#12c2e9', '#c471ed', '#f64f59']
-            ]
+            ],
+            // newPictures: [],
+            privatePhotos: [],
+            publicPhotos: [],
         };
     }
 
-    // async componentDidMount() {
-    //     //console.log("Test ProfilePage");
-    //     //console.log(this.props.user);
+    handler() {
+        this.setState({
+            overlayVisible: false,
+        });
+        this.fetchData();
+    }
 
-    //     try {
-    //         let imageSrc = await axios.post(this.state.dataURL + "/retrieveFile", { "incomingURL": this.state.myUser.profilePicture }, { responseType: 'arraybuffer' });
+    state = {
+        fontLoaded: false,
+    };
 
-    //         this.setState({
-    //             myProfilePicture: "data:image/jpg;base64," + Buffer.Buffer.from(imageSrc.data, 'binary').toString('base64')
-    //         });
-    //     } catch (error) {
-    //         this.setState({
-    //             myProfilePicture: "https://www.retailx.com/wp-content/uploads/2019/12/iStock-476085198.jpg"
-    //         });
-    //     }
-    // }
+    async componentDidMount() {
+        await Font.loadAsync({
+            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
+            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
+            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
+        });
+        
+        this.fetchData();
+
+        this.setState({
+            fontLoaded: true,
+        });
+    }
+
+    async fetchData() {
+        let privateArr = [];
+        let publicArr = [];
+
+        await axios.get(
+            this.state.dataURL + "user/pictures/" + this.state.myUser._id
+        ).then((incomingData) => {
+            privateArr = _.filter(incomingData.data, (element) => {
+                return !element.metadatas.public
+            }).reverse();
+            publicArr = _.filter(incomingData.data, (element) => {
+                return element.metadatas.public
+            }).reverse();
+        });
+
+        this.setState({
+            privatePhotos: privateArr,
+            publicPhotos: publicArr,
+        });
+    }
 
     on_settings_press() {
-        // console.log(this.props);
-        // console.log("settings page clicked");
-        //console.log(this.props.user);
-        this.props.navMod.navigate('Settings', { navigation: this.props.navMod, user: this.props.user });
+        this.props.navigationModule.navigate('Settings', { navigation: this.props.navigationModule, user: this.state.myUser });
     }
 
     renderProfilePicture() {
-        // return <Image source={{ uri: this.state.myProfilePicture }} style={profilePageStyles.userImage} />
         <Avatar rounded title="YP" size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
 
-    }
-
-    renderNewPics() {
-        return this.state.myUser.newPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPrivatePics() {
-        return this.state.myUser.privatePhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
-    }
-
-    renderPublicPics() {
-        return this.state.myUser.publicPhotos.map((item, key) => {
-            return (
-                <Image source={{ uri: item }} style={{ width: 256, height: 144, margin: 10 }} key={key} />
-            )
-        });
     }
 
     renderDescription() {
@@ -95,94 +104,97 @@ class ProfilePage extends Component {
         )
     }
 
-    renderPencilIcon() {
+    renderSettingsIcon() {
         return (
             <Icon name="settings" type="material" reverse raised containerStyle={{ alignSelf: "flex-end", position: "absolute", padding: 10 }} onPress={() => this.on_settings_press()} />
-            // <View style={{ alignItems: "flex-end" }}>
-            //     <UtilityButton title={"Settings"} icon={"settings"} color={"darkgreen"} onPress={() => this.on_settings_press()} />
-            // </View>
         )
     }
 
-
-    renderProfilePage() {
-        return (
-            <View>
-                <View style={{ marginBottom: 180 }}>
-                    <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
-                        {this.renderPencilIcon()}
-                        {
-                            this.state.myUser.profilePicture ? (
-                                <Avatar rounded source={{ uri: this.state.dataURL + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }} size="xlarge" activeOpacity={1.0} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
-                            ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
-                        }
-                        <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
-                        <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
-                        {this.renderDescription()}
-                    </LinearGradient>
-
-                    {/* <Text style={profilePageStyles.helperTextView}>new</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderNewPics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>private</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPrivatePics()}
-                        </ScrollView>
-                        <Text style={profilePageStyles.helperTextView}>public</Text>
-                        <ScrollView nestedScrollEnabled={true} horizontal={true}>
-                            {this.renderPublicPics()}
-                        </ScrollView> */}
-                </View>
-            </View>
-        )
-    }
-
-    render() {
-        return (
-            <View>
-                {this.renderProfilePage()}
-            </View>
-        )
-    }
-}
-class Profile extends Component {
-    constructor(props) {
-        super(props);
-    }
-
-    state = {
-        fontLoaded: false,
-    };
-
-    async componentDidMount() {
-
-        await Font.loadAsync({
-            'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
-            'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
-            'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
-        });
-
+    photoOptions(incomingPhoto) {
         this.setState({
-            fontLoaded: true,
-            // userdata: this.props.navigation.state.params.user,
-            userdata: this.props.userData
+            selectedPhoto: incomingPhoto,
+            overlayVisible: true,
         });
     }
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1 }}>
                 {
                     this.state.fontLoaded ? (
                         <View style={profilePageStyles.profileView}>
                             <ScrollView style={profilePageStyles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
-                                <ProfilePage user={this.state.userdata} navMod={this.props.navigationModule} />
-                                {/* <Text>{this.state.userdata.firstName}</Text> */}
+                                <View style={{ flex: 1 }}>
+                                    <View style={{ marginBottom: 180, flex: 1 }}>
+                                        <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
+                                            {this.renderSettingsIcon()}
+                                            {
+                                                this.state.myUser.profilePicture ? (
+                                                    <Avatar
+                                                        rounded source={{ uri: this.state.dataURL + "static/" + RegExp(/^[a-z]*\/(.*)/).exec(this.state.myUser.profilePicture)[1] }}
+                                                        size="xlarge"
+                                                        activeOpacity={1.0}
+                                                        avatarStyle={profilePageStyles.userImage}
+                                                        containerStyle={profilePageStyles.userImage}
+                                                        placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }}
+                                                        renderPlaceholderContent={() => <ActivityIndicator size="large" color="grey" />} />
+                                                ) : <Avatar rounded title={this.state.myUser.firstName.charAt(0) + this.state.myUser.lastName.charAt(0)} size="xlarge" activeOpacity={0.7} avatarStyle={profilePageStyles.userImage} containerStyle={profilePageStyles.userImage} />
+                                            }
+                                            <Text style={profilePageStyles.userName}>{this.state.myUser.firstName} {this.state.myUser.lastName}</Text>
+                                            <View style={{ borderBottomColor: "white", borderBottomWidth: 0.35, margin: 20 }} />
+                                            {this.renderDescription()}
+                                        </LinearGradient>
+
+                                        {/* <Text style={profilePageStyles.subTextView}>pending approval</Text>
+                                        <FlatList
+                                            data={this.state.newPictures}
+                                            horizontal={true}
+                                            renderItem={({ item }) =>
+                                                <TouchableOpacity onPress={() => { this.photoOptions(item) }}>
+                                                    <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                                                </TouchableOpacity>
+                                            }
+                                            keyExtractor={item => item.metadatas._id} /> */}
+
+                                        <Text style={profilePageStyles.subTextView}>private</Text>
+                                        <FlatList
+                                            data={this.state.privatePhotos}
+                                            horizontal={true}
+                                            extraData={this.state.privatePhotos}
+                                            renderItem={({ item }) =>
+                                                <TouchableOpacity onPress={() => { this.photoOptions(item) }}>
+                                                    <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                                                </TouchableOpacity>
+                                            }
+                                            keyExtractor={item => item.metadatas._id} />
+
+                                        <Text style={profilePageStyles.subTextView}>public</Text>
+                                        <FlatList
+                                            data={this.state.publicPhotos}
+                                            horizontal={true}
+                                            extraData={this.state.publicPhotos}
+                                            renderItem={({ item }) =>
+                                                <TouchableOpacity onPress={() => { this.photoOptions(item) }}>
+                                                    <AsyncImage incomingPictureURL={item.pathToPicture} incomingStyleObj={{ width: 256, height: 144, margin: 2 }} />
+                                                </TouchableOpacity>
+                                            }
+                                            keyExtractor={item => item.metadatas._id} />
+                                    </View>
+                                </View>
                             </ScrollView>
                         </View>
                     ) : null
                 }
+                <Overlay
+                    isVisible={this.state.overlayVisible}
+                    onBackdropPress={() => { this.setState({ overlayVisible: false }) }}
+                    animationType={"slide"}
+                    transparent={true}
+                    width={"90%"}
+                    height={"80%"}
+                    overlayBackgroundColor={"rgba(0,0,0,0.5)"}>
+                    <SetPublicOrPrivate picture={this.state.selectedPhoto} handler={this.handler}/>
+                </Overlay>
             </View>
         );
     }

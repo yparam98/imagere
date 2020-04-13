@@ -1,67 +1,31 @@
-import React, { Component, PureComponent } from 'react';
-import { Text, View, Image, TouchableHighlight, FlatList, ActivityIndicator } from 'react-native';
+import React, { Component } from 'react';
+import { View, FlatList, ActivityIndicator } from 'react-native';
 import * as Font from 'expo-font';
 import axios from 'axios';
-import moment from 'moment';
 import newsfeedPageStyles from '../assets/css/newsfeedPage_styles';
-import NewsfeedRenderer from './NewsfeedRenderer';
+import NewsfeedPanel from './NewsfeedPanel';
+import { Overlay } from 'react-native-elements';
+import ProfileSampler from './ProfileSampler';
 
-class NewsfeedPane extends PureComponent {
+class Newsfeed extends Component {
     constructor(props) {
         super(props);
+        this.handler = this.handler.bind(this);
         this.state = {
             dataLoaded: false,
             newsfeedDataObj: undefined,
             myData: [],
             myNav: this.props.navigation,
-        };
-    }
-
-    initializeData = async () => {
-        await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
-            .then((response) => {
-                for (let pictureObj of response.data) {
-                    if (pictureObj != undefined && pictureObj.metadata != undefined && pictureObj.categorization != undefined) {
-                        if (pictureObj.metadata.photographer != null) {
-                            this.state.myData.push(pictureObj);
-                        }
-                    }
-                }
-                this.setState({
-                    dataLoaded: true
-                });
-            })
-            .catch((err) => {
-                console.log("error retrieving data from API: " + err);
-            });
-    }
-
-    renderNewsfeed = async () => {
-        await this.initializeData();
-    }
-
-    render() {
-        if (!this.state.dataLoaded) {
-            this.renderNewsfeed();
+            overlayVisible: false,
+            selectedUser: {},
         }
-
-        return (
-            <View>
-                {
-                    !this.state.dataLoaded ? (
-                        <View style={{ padding: 25, alignSelf: "center" }}><ActivityIndicator size="large" color="purple" /></View>
-                    ) : <NewsfeedRenderer newsfeedData={this.state.myData} navigation={this.props.navigation}/>
-                }
-            </View>
-        )
     }
-}
-class Newsfeed extends Component {
-    constructor(props) {
-        super(props);
-        // this.state = {
-        // currentUser
-        // }
+
+    handler(user) {
+        this.setState({
+            selectedUser: user,
+            overlayVisible: true,
+        });
     }
 
     state = {
@@ -69,12 +33,13 @@ class Newsfeed extends Component {
     };
 
     async componentDidMount() {
-
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),
             'Quicksand-Bold': require('../assets/fonts/Quicksand-Bold.ttf'),
             'Quicksand-Medium': require('../assets/fonts/Quicksand-Medium.ttf'),
         });
+
+        this.fetchData();
 
         this.setState({
             fontLoaded: true,
@@ -132,12 +97,36 @@ class Newsfeed extends Component {
 >>>>>>> Stashed changes
     render() {
         return (
-            <View style={newsfeedPageStyles.newsfeedView}>
-                {
-                    this.state.fontLoaded ? (
-                        <NewsfeedPane navigation={this.props.navigation} />
-                    ) : null
-                }
+            <View style={{ flex: 1 }}>
+                <View style={newsfeedPageStyles.newsfeedView}>
+                    <View>
+                        <FlatList
+                            data={this.state.myData}
+                            initialNumToRender={5}
+                            showsVerticalScrollIndicator={false}
+                            refreshing={!this.state.dataLoaded}
+                            onRefresh={() => {
+                                this.setState({ dataLoaded: false });
+                                this.fetchData();
+                            }}
+                            extraData={this.state.myData}
+                            renderItem={({ item }) =>
+                                <NewsfeedPanel userObj={item} handler={this.handler} />
+                            }
+                            keyExtractor={item => item._id} />
+
+                        <Overlay
+                            isVisible={this.state.overlayVisible}
+                            onBackdropPress={() => { this.setState({ overlayVisible: false }) }}
+                            animationType={"slide"}
+                            transparent={true}
+                            width={"90%"}
+                            height={"90%"}
+                            overlayBackgroundColor={"rgb(0,0,0)"}>
+                            <ProfileSampler myUser={this.state.selectedUser} />
+                        </Overlay>
+                    </View>
+                </View>
             </View>
         );
     }

@@ -2,7 +2,8 @@ import { StyleSheet } from "react-native";
 
 const profilePageStyles = StyleSheet.create({
     profileView: {
-        // flex: 1
+        flex: 1,
+        backgroundColor: "rgb(15,15,15)"
     },
     topBlackBackground: {
         backgroundColor: 'black',
@@ -48,6 +49,14 @@ const profilePageStyles = StyleSheet.create({
         overflow: "hidden"
     },
     helperTextView: {
+        fontFamily: "Quicksand",
+        fontSize: 12,
+        color: "white",
+        padding: 5,
+        margin: 10,
+        alignSelf: "flex-start"
+    },
+    subTextView: {
         fontFamily: "Quicksand",
         fontSize: 12,
         color: "white",

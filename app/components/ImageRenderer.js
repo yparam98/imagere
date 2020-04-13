@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image } from 'react-native-elements';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, View, Image as reactNativeImage } from 'react-native';
 
 class AsyncImage extends Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class AsyncImage extends Component {
     render() {
         return (
             <View>
-                <Image source={{ uri: this.state.pictureURL }} style={this.state.styleObj} containerStyle={this.state.styleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"grey"} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} resizeMode={"contain"}/>
+                <Image source={{ uri: this.state.pictureURL }} style={this.props.incomingStyleObj} containerStyle={this.props.incomingStyleObj} PlaceholderContent={<ActivityIndicator size={"small"} color={"grey"} />} placeholderStyle={{ backgroundColor: "rgba(0,0,0,0.0)" }} resizeMode={"contain"}/>
             </View>
         )
     }

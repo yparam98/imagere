@@ -4,7 +4,8 @@ const userExperienceStyles = StyleSheet.create({
     userExperienceView: {
         flex: 1,
         flexDirection: "column",
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        backgroundColor: "rgb(15,15,15)"
     },
     topBlackBackground: {
         backgroundColor: 'black',
