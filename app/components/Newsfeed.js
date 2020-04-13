@@ -81,6 +81,55 @@ class Newsfeed extends Component {
         });
     }
 
+<<<<<<< Updated upstream
+=======
+    async fetchData() {
+        var index = 0;
+        var dataArr = [];
+
+        await axios.get('http://myvmlab.senecacollege.ca:6746/newsfeed')
+            .then((response) => {
+                response.data.reverse();
+
+                for (let pictureObj of response.data) {
+                    index = index + 1;
+
+                    // pictureObj != undefined
+                    // pictureObj != undefined
+                    // pictureObj.metadata != undefined
+                    // pictureObj.categorization != undefined
+                    // pictureObj.categorization.nnResult[0].label != undefined
+                    // pictureObj.metadata.photographer != null
+                    // dataArr.push(pictureObj);
+
+                    if (pictureObj != undefined) {
+                        if (pictureObj.metadata != undefined) {
+                            if (pictureObj.metadata.photographer != undefined) {
+                                if (pictureObj.metadata.public == true) {
+                                    if (pictureObj.categorization != undefined) {
+                                        if (pictureObj.categorization.nnResult[0] != undefined) {
+                                            if (pictureObj.categorization.nnResult[0].label != undefined) {
+                                                dataArr.push(pictureObj);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log("error retrieving data from API: " + err);
+            });
+
+        this.setState({
+            dataLoaded: true,
+            myData: dataArr,
+        });
+    }
+
+>>>>>>> Stashed changes
     render() {
         return (
             <View style={newsfeedPageStyles.newsfeedView}>
