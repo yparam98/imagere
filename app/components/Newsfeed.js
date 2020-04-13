@@ -45,9 +45,7 @@ class Newsfeed extends Component {
             fontLoaded: true,
         });
     }
-
-<<<<<<< Updated upstream
-=======
+    
     async fetchData() {
         var index = 0;
         var dataArr = [];
@@ -93,8 +91,7 @@ class Newsfeed extends Component {
             myData: dataArr,
         });
     }
-
->>>>>>> Stashed changes
+    
     render() {
         return (
             <View style={{ flex: 1 }}>
