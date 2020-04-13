@@ -29,6 +29,9 @@
     },
     "notification": {
       "icon": "app/assets/icons/android_icon_1024.png"
+    },
+    "splash": {
+      "image": "app/assets/images/splash.png"
     }
   }
 }
