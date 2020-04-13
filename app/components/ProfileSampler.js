@@ -45,7 +45,7 @@ class ProfileSampler extends Component {
         ).then((incomingData) => {
             this.setState({
                 pictureData: _.filter(incomingData.data, (element) => {
-                    return !element.metadatas.public // right now it renders EVERYTHING!! CHANGE TO PUBLIC ONCE PRIVATE/PUBLIC IS UP!!
+                    return element.metadatas.public // right now it renders EVERYTHING!! CHANGE TO PUBLIC ONCE PRIVATE/PUBLIC IS UP!!
                 }).reverse(),
                 fontLoaded: true,
             });

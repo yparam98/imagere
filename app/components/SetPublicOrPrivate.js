@@ -76,6 +76,7 @@ export default class SetPublicOrPrivate extends Component {
                         textStyle={{ fontFamily: 'Quicksand-Medium' }}
                         onPress={()=>{
                             this.togglePublicPrivate();
+                            this.props.handler();
                         }}
                     />
                     <Button

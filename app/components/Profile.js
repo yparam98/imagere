@@ -21,6 +21,7 @@ class Profile extends PureComponent {
             myUser: this.props.userData,
             dataURL: "http://myvmlab.senecacollege.ca:6746/",
             selector: parseInt(Math.random() * 10),
+            refreshing: false,
             selectedPhoto: '',
             overlayVisible: false,
             backgroundImg: [
@@ -84,6 +85,7 @@ class Profile extends PureComponent {
         this.setState({
             privatePhotos: privateArr,
             publicPhotos: publicArr,
+            refreshing: false,
         });
     }
 
@@ -123,7 +125,17 @@ class Profile extends PureComponent {
                 {
                     this.state.fontLoaded ? (
                         <View style={profilePageStyles.profileView}>
-                            <ScrollView style={profilePageStyles.scrollingProfilePage} showsVerticalScrollIndicator={false}>
+                            <ScrollView
+                                style={profilePageStyles.scrollingProfilePage}
+                                showsVerticalScrollIndicator={false}
+                                refreshControl={
+                                    <RefreshControl
+                                        refreshing={this.state.refreshing}
+                                        onRefresh={() => {
+                                            this.setState({ refreshing: true });
+                                            this.fetchData();
+                                        }} />
+                                }>
                                 <View style={{ flex: 1 }}>
                                     <View style={{ marginBottom: 180, flex: 1 }}>
                                         <LinearGradient colors={this.state.backgroundImg[this.state.selector]} style={{ padding: "2%" }}>
