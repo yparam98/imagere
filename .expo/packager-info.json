@@ -1,19 +1,9 @@
 {
-<<<<<<< Updated upstream
-  "expoServerPort": 19000,
-  "expoServerNgrokUrl": "https://4q-yqt.yparameshwaran.mobile-app.exp.direct",
-  "packagerNgrokUrl": "https://packager.4q-yqt.yparameshwaran.mobile-app.exp.direct",
-  "ngrokPid": 1585162,
   "devToolsPort": 19002,
-  "packagerPort": 19001,
-  "packagerPid": 384049
-=======
   "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
-  "ngrokPid": null,
-  "devToolsPort": 19002,
-  "packagerPort": null,
-  "packagerPid": null
->>>>>>> Stashed changes
+  "ngrokPid": null
 }

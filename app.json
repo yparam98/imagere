@@ -25,14 +25,10 @@
     "android": {
       "package": "com.prj666.imagere",
       "icon": "app/assets/icons/android_icon_1024.png",
-<<<<<<< Updated upstream
-      "versionCode": 8
-=======
       "versionCode": 11
     },
     "notification": {
       "icon": "app/assets/icons/android_icon_1024.png"
->>>>>>> Stashed changes
     }
   }
 }
