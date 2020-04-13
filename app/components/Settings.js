@@ -40,8 +40,8 @@ const list = [
 
 class Settings extends Component {
     async componentDidMount() {
-        console.log("test Settings:");
-        console.log(this.props.navigation.state.params.user);
+        // console.log("test Settings:");
+        // console.log(this.props.navigation.state.params.user);
 
         await Font.loadAsync({
             'Quicksand': require('../assets/fonts/Quicksand-Regular.ttf'),

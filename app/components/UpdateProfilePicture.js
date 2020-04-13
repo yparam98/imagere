@@ -71,6 +71,8 @@ class UpdateProfilePicture extends Component {
         let options = { base64: true };
         let taken_photo = await ImagePicker.launchImageLibraryAsync();
 
+        console.log(taken_photo.uri);
+
         this.setState({
             photo: taken_photo,
             myProfilePicture: taken_photo.uri
@@ -83,15 +85,17 @@ class UpdateProfilePicture extends Component {
         formData.append("profilePicture", { uri: this.state.photo.uri, name: this.state.myUser._id + ".jpg", type: "image/jpg" });
         formData.append("user_id", this.state.myUser._id);
 
-        fetch(this.state.dataURL + "/add/user/profilePic", {
+        fetch("http://myvmlab.senecacollege.ca:6746/add/user/profilePic", {
             method: "post",
             headers: {
                 "Content-Type": "multipart/form-data",
             },
             body: formData,
         }).then((response) => {
+            // console.log(response);
             ToastAndroid.show("Photo saved successfully!", ToastAndroid.SHORT);
         }).catch((err) => {
+            // console.log(err);
             ToastAndroid.show("Photo did not save successfully!", ToastAndroid.SHORT);
         });
     }
