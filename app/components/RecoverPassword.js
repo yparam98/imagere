@@ -13,18 +13,31 @@ class RecoverPassword extends PureComponent {
             overlayVisible: true,
             userEnteredEmail: "",
             emailFilled: false,
+            errorMessage: "",
         };
     }
 
     sendResetEmail() {
+        console.log(this.state.userEnteredEmail);
         axios.post(
-            this.state.dataURL + "/email/user/resetPassword",
+            "http://myvmlab.senecacollege.ca:6746/email/user/resetPassword",
             {
-
+                "userEmail": this.state.userEnteredEmail
             }
-        ).then(() => {
-            this.viewpager.setPage(1);
-        })
+        ).then((response) => {
+            if (response.data.errorMsg)
+            {
+                this.setState({
+                    errorMessage: response.data.errorMsg
+                });   
+            }
+            else
+            {
+                this.viewpager.setPage(1);
+            }
+        }).catch((err) => {
+            console.log("ERROR!" + err);
+        });
     }
 
     render() {
@@ -41,6 +54,8 @@ class RecoverPassword extends PureComponent {
                             autoCompleteType={"email"}
                             containerStyle={{ marginTop: 25, marginBottom: 25 }}
                             onChangeText={(inputText) => { this.setState({ emailFilled: true }); this.setState({ userEnteredEmail: inputText }); }}
+                            errorMessage={this.state.errorMsg == "" ? "" : this.state.errorMessage}
+                            errorStyle={{color: 'red'}}
                         />
                         <Button
                             title={"Next"}
